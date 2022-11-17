@@ -2,7 +2,7 @@ import React, { useState,useEffect } from "react";
 import DeleteForever from '@material-ui/icons/DeleteForever';
 import { Link, useParams } from "react-router-dom";
 import VisibilityIcon from '@mui/icons-material/Visibility';
-import Pagination from '@mui/material/Pagination'
+import ReactPaginate from "react-paginate";
 import BootstrapSwitchButton from 'bootstrap-switch-button-react';
 import axios from 'axios';
 
@@ -10,6 +10,7 @@ import axios from 'axios';
 
 const ManageAdmin = () => {
     const [datas, setDatas]=useState([])
+    const [search, setSearch] = useState("")
 
     const getData = async () => {
         await axios.get('http://localhost:5000/getparking').then(res => {
@@ -27,6 +28,20 @@ const ManageAdmin = () => {
 
     const [activeInactive, setActiveInactive] = useState(true)
 
+    //pagination
+    const [pageNumber, setPageNumber] = useState(0);
+
+    const usersPerPage = 5;
+    const pagesVisited = pageNumber * usersPerPage;
+    const pageCount = Math.ceil(datas.length / usersPerPage);
+  
+    const changePage = ({ selected }) => {
+      setPageNumber(selected);
+    };
+
+
+    //pagination
+
     return (
         <>
             <div className="page-wrapper" style={{ minHeight: "250px" }}>
@@ -43,7 +58,7 @@ const ManageAdmin = () => {
                                 <div className="col-md-3">
                                     <div className="table-data-search-box-manage">
                                         <div className="search-bar" >
-                                            <input type="text" className="searchTerm-input" placeholder="Search" />
+                                            <input type="text" onChange={(e)=>setSearch(e.target.value)} className="searchTerm-input" placeholder="Search" />
                                             <button type="submit" className="searchButtons">
                                                 <i className="fa fa-search" aria-hidden="true"></i>
                                             </button>
@@ -75,15 +90,18 @@ const ManageAdmin = () => {
                                         </thead>
                                         <tbody>
                                             {
-                                                datas.map((item)=>(
-
-                                                
-
-
-                                            
+                                                datas.filter(
+                                                    (row) =>
+                                                      !search.length ||
+                                                      row.parking_name
+                                                        .toString()
+                                                        .toLowerCase()
+                                                        .includes(search.toString().toLowerCase()),
+                                                  )
+                                                  .slice(pagesVisited, pagesVisited + usersPerPage).map((item,i)=>(
 
                                             <tr >
-                                                <td>1</td>
+                                                <td>{i + pagesVisited + 1}</td>
                                                 <td>
                                                     <div className="user-icon-detail-area">
                                                         <div className="company-user-icon-area">
@@ -122,12 +140,19 @@ const ManageAdmin = () => {
                                         </tbody>
 
                                     </table>
-                                    <Pagination count={10} color="primary"
-                                    // currentPage={currentPage}
-                                    // totalCount={data.length}
-                                    // pageSize={PageSize}
-                                    // onPageChange={page => setCurrentPage(page)}
-                                    />
+                                    <div style={{ display: datas.length > 5 ? "block" : "none" }}>
+                    <ReactPaginate
+                      previousLabel={"Previous"}
+                      nextLabel={"Next"}
+                      pageCount={pageCount}
+                      onPageChange={changePage}
+                      containerClassName={"paginationBttns"}
+                      previousLinkClassName={"previousBttn"}
+                      nextLinkClassName={"nextBttn"}
+                      disabledClassName={"paginationDisabled"}
+                      activeClassName={"paginationActive"}
+                    />
+                    </div>
                                 </div>
                             </div>
                         </div>

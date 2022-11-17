@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import DeleteForever from '@material-ui/icons/DeleteForever';
 import { Link } from "react-router-dom";
-import Pagination from '@mui/material/Pagination'
+import ReactPaginate from "react-paginate";
 import axios from 'axios';
 
 
@@ -26,14 +26,22 @@ const Bookings = () => {
         setAge(event.target.value);
     };
 
-    const data = [
-        { id: '1', add: 'Cecilia Chapman 711-2880 Nulla St. Mankato Mississippi 96522 (257) 563-7401', cap: '100', ic1: <i className="fas fa-edit"></i>, ic2: <DeleteForever style={{ color: '#FF5C93' }} /> },
-        { id: '2', add: 'Cecilia Chapman 711-2880 Nulla St. Mankato Mississippi 96522 (257) 563-7401', cap: '100', ic1: <i className="fas fa-edit"></i>, ic2: <DeleteForever style={{ color: '#FF5C93' }} /> },
-        { id: '3', add: 'Cecilia Chapman 711-2880 Nulla St. Mankato Mississippi 96522 (257) 563-7401', cap: '100', ic1: <i className="fas fa-edit"></i>, ic2: <DeleteForever style={{ color: '#FF5C93' }} /> },
-        { id: '4', add: 'Cecilia Chapman 711-2880 Nulla St. Mankato Mississippi 96522 (257) 563-7401', cap: '100', ic1: <i className="fas fa-edit"></i>, ic2: <DeleteForever style={{ color: '#FF5C93' }} /> },
-        { id: '5', add: 'Cecilia Chapman 711-2880 Nulla St. Mankato Mississippi 96522 (257) 563-7401', cap: '100', ic1: <i className="fas fa-edit"></i>, ic2: <DeleteForever style={{ color: '#FF5C93' }} /> },
+   
 
-    ]
+    //pagination
+    const [pageNumber, setPageNumber] = useState(0);
+    const [search,setSearch] = useState("");
+
+    const usersPerPage = 5;
+    const pagesVisited = pageNumber * usersPerPage;
+    const pageCount = Math.ceil(dataName.length / usersPerPage);
+  
+    const changePage = ({ selected }) => {
+      setPageNumber(selected);
+    };
+
+
+    //pagination
     return (
         <>
             <div className="container-fluid ">
@@ -74,7 +82,15 @@ const Bookings = () => {
                             </thead>
                             <tbody>
                                 {
-                                    dataName.map((item) => (
+                                    dataName.filter(
+                                        (row) =>
+                                          !search.length ||
+                                          row.parking_id
+                                            .toString()
+                                            .toLowerCase()
+                                            .includes(search.toString().toLowerCase()),
+                                      )
+                                      .slice(pagesVisited, pagesVisited + usersPerPage).map((item) => (
                                         <tr>
                                             <th scope="row">{item.id}</th>
                                             <td>{item.parking_id}</td>
@@ -92,7 +108,19 @@ const Bookings = () => {
                                 }
                             </tbody>
                         </table>
-                        <Pagination count={10} color="primary" />
+                        <div style={{ display: dataName.length > 5 ? "block" : "none" }}>
+                    <ReactPaginate
+                      previousLabel={"Previous"}
+                      nextLabel={"Next"}
+                      pageCount={pageCount}
+                      onPageChange={changePage}
+                      containerClassName={"paginationBttns"}
+                      previousLinkClassName={"previousBttn"}
+                      nextLinkClassName={"nextBttn"}
+                      disabledClassName={"paginationDisabled"}
+                      activeClassName={"paginationActive"}
+                    />
+                    </div>
                     </div>
                 </div>
 

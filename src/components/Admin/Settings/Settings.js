@@ -147,6 +147,28 @@ const Settings = () => {
       
     }
   // }
+
+
+  //change photo
+  const uploadedImage = React.useRef(null);
+  const imageUploader = React.useRef(null);
+  const [image,setImage] = useState('')
+
+  const handleImageUpload = e => {
+    const [file] = e.target.files;
+    setImage(e.target.files[0])
+    if (file) {
+      const reader = new FileReader();
+      const { current } = uploadedImage;
+      current.file = file;
+      reader.onload = e => {
+        current.src = e.target.result;
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  //change photo
   return (
     <>
       <div className="page-wrapper" style={{ minHeight: "250px" }}>
@@ -244,22 +266,28 @@ const Settings = () => {
                           <div className="user-photo-main-area">
                             <div className="user-img-area">
                               <img
-                                src={
+                              ref={uploadedImage}
+                                src = {
+                                  data.image === ''?
                                   process.env.PUBLIC_URL +
-                                  "/assets/images/user-img.jpg"
+                                  "/assets/images/user-img.jpg" : data.company_image
                                 }
                                 alt="user img"
                               />
                             </div>
                             <div className="change-photo-btn-area">
-                              <a href="#" className="change-poto-btn">
+                              {/* <a href="#" className="change-poto-btn">
 
                                 <i
                                   className="fa fa-camera"
                                   aria-hidden="true"
                                 ></i>
                                 Edit
-                              </a>
+                              </a> */}
+                              <label className="change-poto-btn">
+                                <input ref={imageUploader} onChange={handleImageUpload} type="file" style={{display:'none'}}></input>
+                                Edit
+                              </label>
                             </div>
                           </div>
                  
@@ -277,7 +305,7 @@ const Settings = () => {
                             id="paymentFrm"
                           >
                             <div className="row">
-                              <div className="col-lg-12">
+                              <div className="col-lg-6">
                                 <div className="form-group">
                                   <label>Name</label>
                                   <input
@@ -371,7 +399,7 @@ const Settings = () => {
                                   />
                                 </div>
                               </div>
-                              <div className="col-lg-6">
+                              {/* <div className="col-lg-6">
                                 <div className="form-group">
                                   <label>Country</label>
                                   <div className="profile-input-box-area">
@@ -449,7 +477,7 @@ const Settings = () => {
                                     </select>
                                   </div>
                                 </div>
-                              </div>
+                              </div> */}
                               <div className="col-lg-6">
                                 <div className="form-group">
                                   <label>Postal/ZIP Code</label>

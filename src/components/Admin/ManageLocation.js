@@ -5,13 +5,14 @@ import BootstrapDialog from './BootstrapDialog';
 import BootstrapSwitchButton from 'bootstrap-switch-button-react'
 import 'reactjs-popup/dist/index.css';
 import EditLocation from './EditLocation';
-import Pagination from '@mui/material/Pagination'
+import ReactPaginate from "react-paginate";
 import axios from 'axios';
 import { Abc } from '@mui/icons-material';
 
 
 const ManageLocation = () => {
     const [dataName, setDataName] = useState([])
+    const [search,setSearch] = useState("")
     const getData = async () => {
         await axios.get('http://localhost:5000/alllocationlist').then(res => {
             setDataName(res.data.message)
@@ -34,6 +35,20 @@ const ManageLocation = () => {
    
     const [activeInactive, setActiveInactive] = useState(true)
 
+    //pagination
+    const [pageNumber, setPageNumber] = useState(0);
+
+    const usersPerPage = 5;
+    const pagesVisited = pageNumber * usersPerPage;
+    const pageCount = Math.ceil(dataName.length / usersPerPage);
+  
+    const changePage = ({ selected }) => {
+      setPageNumber(selected);
+    };
+
+
+    //pagination
+
 
     return (
         <>
@@ -49,7 +64,7 @@ const ManageLocation = () => {
                             <div className="col-md-3">
                                 <div className="table-data-search-box-manage">
                                     <div className="search-bar" >
-                                        <input type="text" className="searchTerm-input" placeholder="Search" />
+                                        <input type="text" onChange={(e)=>setSearch(e.target.value)} className="searchTerm-input" placeholder="Search" />
                                         <button type="submit" className="searchButtons">
                                             <i className="fa fa-search" aria-hidden="true"></i>
                                         </button>
@@ -78,9 +93,17 @@ const ManageLocation = () => {
                             </thead>
                             <tbody>
                                 {
-                                    dataName.map((item) => (
+                                    dataName.filter(
+                                        (row) =>
+                                          !search.length ||
+                                          row.location
+                                            .toString()
+                                            .toLowerCase()
+                                            .includes(search.toString().toLowerCase()),
+                                      )
+                                      .slice(pagesVisited, pagesVisited + usersPerPage).map((item, i) => (
                                         <tr>
-                                            <th scope="row">{item.id}</th>
+                                            <th scope="row">{i + pagesVisited + 1 }</th>
                                             <td>{item.location}</td>
                                             <td>
                                             <Link ><EditLocation/></Link>
@@ -105,7 +128,19 @@ const ManageLocation = () => {
                                 }
                             </tbody>
                         </table>
-                        <Pagination count={10} color="primary" />
+                        <div style={{ display: dataName.length > 5 ? "block" : "none" }}>
+                    <ReactPaginate
+                      previousLabel={"Previous"}
+                      nextLabel={"Next"}
+                      pageCount={pageCount}
+                      onPageChange={changePage}
+                      containerClassName={"paginationBttns"}
+                      previousLinkClassName={"previousBttn"}
+                      nextLinkClassName={"nextBttn"}
+                      disabledClassName={"paginationDisabled"}
+                      activeClassName={"paginationActive"}
+                    />
+                    </div>
                     </div>
 
                 </div>

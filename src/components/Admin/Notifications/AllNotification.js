@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import Pagination from '@mui/material/Pagination'
+import ReactPaginate from "react-paginate";
 import NotificationList from '../../Admin/NotificationList'
 import axios from "axios";
 const AllNotification = () => {
@@ -22,6 +22,22 @@ const AllNotification = () => {
   useEffect(() => {
     getData()
   }, [])
+
+  //pagination
+  const [pageNumber, setPageNumber] = useState(0);
+  const [search,setSearch] = useState("");
+
+  const usersPerPage = 5;
+  const pagesVisited = pageNumber * usersPerPage;
+  const pageCount = Math.ceil(data.length / usersPerPage);
+
+  const changePage = ({ selected }) => {
+    setPageNumber(selected);
+  };
+
+
+  //pagination
+
   return (
     <div className="page-wrapper" >
       <div className="container-fluid">
@@ -53,12 +69,20 @@ const AllNotification = () => {
                   </thead>
                   <tbody>
                   {
-                    data.map((item,i)=>(
+                    data.filter(
+                                        (row) =>
+                                          !search.length ||
+                                          row.parking_id
+                                            .toString()
+                                            .toLowerCase()
+                                            .includes(search.toString().toLowerCase()),
+                                      )
+                                      .slice(pagesVisited, pagesVisited + usersPerPage).map((item,i)=>(
 
                     
                   
                     <tr>
-                      <td>{i + 1}</td>
+                      <td>{i + pagesVisited + 1}</td>
                       <td>
                         {item.user_id}
                       </td>
@@ -88,7 +112,19 @@ const AllNotification = () => {
                     ))}
                   </tbody>
                 </table>
-                <Pagination count={10} color="primary" />
+                <div style={{ display: data.length > 5 ? "block" : "none" }}>
+                    <ReactPaginate
+                      previousLabel={"Previous"}
+                      nextLabel={"Next"}
+                      pageCount={pageCount}
+                      onPageChange={changePage}
+                      containerClassName={"paginationBttns"}
+                      previousLinkClassName={"previousBttn"}
+                      nextLinkClassName={"nextBttn"}
+                      disabledClassName={"paginationDisabled"}
+                      activeClassName={"paginationActive"}
+                    />
+                    </div>
 
               </div>
             </div>

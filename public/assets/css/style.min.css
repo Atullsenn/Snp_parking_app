@@ -18571,7 +18571,78 @@ h2.metadata-heading {
 
 /*vendore succesfull signed css end here*/
 
+.paginationBttns {
+  width: 95%;
+  /* height: 40px; */
+  list-style: none;
+  display: flex;
+  justify-content: right;
+  align-items:center;
+}
 
+.paginationBttns a {
+  padding:0px;
+  margin:10px;
+  border-radius: 20px;
+ /* border: 1px solid #2b2eff; */
+  color: #0e2259;
+  cursor: pointer;
+}
+
+/* .paginationBttns a:hover {
+  color: white;
+  background-color: var(--bs-pink);
+} */
+
+.paginationActive a {
+  color:#fff !important;
+  background-color:transparent;
+}
+
+
+.paginationActive {
+width:30px;
+height:30px;
+border-radius:50%;
+background: #0e2259; 
+line-height:30px;
+text-align: center;
+}
+
+/* .paginationDisabled a {
+  color: grey;
+  background-color: grey;
+} */
+
+.table-responsive {
+  overflow-x: auto;
+  display:block;  
+}
+
+.icon-position {
+text-align:center;  
+}
+
+/*vendore succesfull signed css end here*/
+
+
+.manage-admins-table-responsive::-webkit-scrollbar {
+  height: 5px;
+}
+
+.manage-admins-table-responsive::-webkit-scrollbar-track {
+  border-radius: 10px;
+}
+.manage-admins-table-responsive::-webkit-scrollbar-thumb {
+  background:#972e49; 
+}
+
+
+.manage-admins-table-responsive.table-responsive {
+  /* border-bottom: 1px solid #cdcdcd; */
+  margin: 0px 0px 30px 0px;
+  white-space: nowrap;
+}
 
 
 
