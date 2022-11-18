@@ -6,7 +6,7 @@ const connection= mysql.createConnection({
     host:"localhost",
     user:"root",
     password:"",
-    database:"parking_app_database"
+    database:"snp_parking_app_db"
     
 })
 connection.connect((error)=>{

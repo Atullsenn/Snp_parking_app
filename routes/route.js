@@ -14,6 +14,8 @@ const registration= require('../controllers/registration/registration');
 const changepassword= require("../controllers/changepassword/changepassword");
 const loginuser= require("../controllers/login/login")
 const alldata= require("../controllers/alldata/alldata")
+const updateAdminProfile = require("../controllers/admin/UpdateAdmin");
+const getLocationById = require('../controllers/location/getLocationById');
 const cors = require('cors')
 router.use(cors())
 
@@ -21,6 +23,8 @@ router.post("/registration", registration);
 router.post("/login", loginuser)
 router.post("/changepassword", changepassword);
 router.post("/allData", alldata);
+router.post("/getLocationByID",getLocationById);
+
 
 
 //midddleware//
@@ -43,6 +47,7 @@ const filefilter = (req, file, cb) => {
 
 const upload = multer({ storage: storage, limits: { fileSize: 1024 * 1024 * 5 }, fileFilter: filefilter });
 const updateprofile= require("../controllers/updateprofile/updateprofile")
+router.post("/updateAdmin",upload.single('image'),updateAdminProfile)
 const managecustomer= require("../controllers/managecustomers/getmanagecustomers");
 router.post("/getmanagecustomer",managecustomer
 )

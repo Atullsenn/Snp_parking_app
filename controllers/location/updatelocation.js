@@ -17,8 +17,8 @@ const updatelocation = async (req, res) => {
                 }).then(jsonData => {
                     console.log(jsonData);
                     const value = jsonData.results[0].geometry.location;
-                    console.log(value.lat);
-                    console.log(value.lng);
+                    // console.log(value.lat);
+                    // console.log(value.lng);
                     db.query('UPDATE location SET location= "' + req.body.location + '", lat="'+value.lat+'",lng ="'+value.lng+'" WHERE id= "' + req.body.id + '"', (error, data) => {
                         if (error) {
                             res.status(502).send({ message: " location is not updated" })

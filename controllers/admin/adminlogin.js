@@ -8,7 +8,7 @@ const adminlogin = async (req, res) => {
         if (!email || !password) {
             res.status(400).send("please enter the all details")
         } else {
-            db.query('SELECT email,password from admin WHERE id= "' + req.body.id + '"', (error, data) => {
+            db.query('SELECT email,password from admin WHERE id = "'+req.body.id+'"', (error, data) => {
                 if (error) {
                     console.log(error);
                     res.status(502).send({ message: "unable to fetch the data from the server" })
