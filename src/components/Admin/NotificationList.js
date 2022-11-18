@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { useEffect,useState } from 'react';
 import PropTypes from 'prop-types';
 import Button from '@mui/material/Button';
 import { styled } from '@mui/material/styles';
@@ -12,6 +13,8 @@ import MenuItem from '@mui/material/MenuItem';
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 import CloseIcon from '@mui/icons-material/Close';
+import axios from 'axios';
+import { URL } from '../../url/url';
 
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
     '& .MuiDialogContent-root': {
@@ -54,24 +57,24 @@ NotificationList.propTypes = {
     children: PropTypes.node,
     onClose: PropTypes.func.isRequired,
 };
-const currencies = [
-    {
-        value: 'USD',
-        label: 'All',
-    },
-    {
-        value: 'EUR',
-        label: 'Saurav',
-    },
-    {
-        value: 'BTC',
-        label: 'sirf mai',
-    },
-    {
-        value: 'JPY',
-        label: 'kala',
-    },
-];
+// const currencies = [
+//     {
+//         value: 'USD',
+//         label: 'All',
+//     },
+//     {
+//         value: 'EUR',
+//         label: 'Saurav',
+//     },
+//     {
+//         value: 'BTC',
+//         label: 'sirf mai',
+//     },
+//     {
+//         value: 'JPY',
+//         label: 'kala',
+//     },
+// ];
 export default function CustomizedDialogs() {
 
 
@@ -91,6 +94,31 @@ export default function CustomizedDialogs() {
     const handleClose = () => {
         setOpen(false);
     };
+
+
+    //get all customer api
+    const [currencies,setCurrencies] = useState([])
+    const getAllCustomerList = ()=>{
+        axios.get(URL + '/getAllCustomers',{
+            Accept:'Application',
+            'Content-Type': 'application/json'
+        }).then((res)=>{
+            setCurrencies(res.data.message)
+            // console.log('chekkk')
+            // console.log(res)
+            // console.log('chekkk')
+        }).catch(err=>{
+            console.log(err)
+        })
+    }
+
+
+    useEffect(()=>{
+        getAllCustomerList()
+    },[])
+
+
+    //get all customer api
 
     return (
         <div>
@@ -120,12 +148,12 @@ export default function CustomizedDialogs() {
                                 id="outlined-select-currency"
                                 select
                                 label="Customer Name"
-                                value={currency}
+                                value={currencies}
                                 onChange={handleChange}
                             >
                                 {currencies.map((option) => (
-                                    <MenuItem key={option.value} value={option.value}>
-                                        {option.label}
+                                    <MenuItem>
+                                        {option.first_name}
                                     </MenuItem>
                                 ))}
                             </TextField>

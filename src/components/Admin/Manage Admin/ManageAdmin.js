@@ -5,15 +5,17 @@ import VisibilityIcon from '@mui/icons-material/Visibility';
 import ReactPaginate from "react-paginate";
 import BootstrapSwitchButton from 'bootstrap-switch-button-react';
 import axios from 'axios';
+import { URL } from "../../../url/url";
 
 
 
 const ManageAdmin = () => {
     const [datas, setDatas]=useState([])
     const [search, setSearch] = useState("")
+    const id = useParams()
 
     const getData = async () => {
-        await axios.get('http://localhost:5000/getparking').then(res => {
+        await axios.get(URL + '/getparking').then(res => {
             setDatas(res.data.message)
             console.log(res.data.message);
         }).catch(err => {
@@ -115,7 +117,7 @@ const ManageAdmin = () => {
                                                 <td><VisibilityIcon /></td>
                                                 <td>full/remain</td>
                                                 <td>
-                                                    <Link  to={`/app/editparking/}`} className="mange-admins-edit-btn"><i className="fas fa-edit"></i></Link>
+                                                    <Link  to={`/app/editparking/${item.id}`} className="mange-admins-edit-btn"><i className="fas fa-edit"></i></Link>
                                                     <Link to={`/app/admin/`} className="mange-admins-dlt-btn">                                                            <DeleteForever style={{ color: '#FF5C93' }} />
                                                     </Link>
                                                 </td>

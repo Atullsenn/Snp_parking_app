@@ -4,12 +4,16 @@ import Button from '@mui/material/Button';
 import { styled } from '@mui/material/styles';
 import Dialog from '@mui/material/Dialog';
 import { Link } from "react-router-dom";
-
+import { useEffect } from 'react';
 import DialogTitle from '@mui/material/DialogTitle';
 import DialogContent from '@mui/material/DialogContent';
 import DialogActions from '@mui/material/DialogActions';
 import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
+import axios from 'axios';
+import { URL } from '../../url/url';
+import { useParams } from 'react-router-dom';
+import { useState } from 'react';
 
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
     '& .MuiDialogContent-root': {
@@ -61,6 +65,33 @@ export default function CustomizedDialogs() {
         setOpen(false);
     };
 
+    const id = useParams()
+    const [data,setData] = useState([])
+
+    //Get Location By ID Api
+    const getLocationById = ()=>{
+        let req = {id:id}
+        console.log("req")
+        console.log(req)
+        axios.post(URL + '/getLocationByID',req,{
+            Accept:'Application',
+            'Content-type': 'application/json'
+        }).then((res)=>{
+            console.log("checking location by id")
+            console.log(res)
+            setData(res.data.data[0])
+            console.log("checking location By id")
+        }).catch(err=>console.log(err))
+    }
+
+    useEffect(()=>{
+        getLocationById()
+    },[])
+    
+
+    
+    //Get Location By ID APi
+
     return (
         <div>
             <Link onClick={handleClickOpen} className="mange-admins-edit-btn"><i className="fas fa-edit"></i></Link>
@@ -73,7 +104,7 @@ export default function CustomizedDialogs() {
                     Edit Location
                 </BootstrapDialogTitle>
                 <DialogContent dividers>
-                    <input type="text" placeholder='Enter Location' />
+                    <input  type="text" placeholder='Enter Location' />
                 </DialogContent>
                 <DialogActions className=''>
                     <Button autoFocus onClick={handleClose}>

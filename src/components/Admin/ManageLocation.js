@@ -7,6 +7,8 @@ import 'reactjs-popup/dist/index.css';
 import EditLocation from './EditLocation';
 import ReactPaginate from "react-paginate";
 import axios from 'axios';
+import { useParams } from 'react-router-dom';
+import { URL } from '../../url/url';
 import { Abc } from '@mui/icons-material';
 
 
@@ -14,12 +16,12 @@ const ManageLocation = () => {
     const [dataName, setDataName] = useState([])
     const [search,setSearch] = useState("")
     const getData = async () => {
-        await axios.get('http://localhost:5000/alllocationlist').then(res => {
+        await axios.get(URL + '/alllocationlist').then(res => {
             setDataName(res.data.message)
             console.log(res.data.message)
         }).catch(err => {
             console.log(err)
-            console.log("err")
+            //console.log("err")
         })
     }
 
@@ -37,6 +39,7 @@ const ManageLocation = () => {
 
     //pagination
     const [pageNumber, setPageNumber] = useState(0);
+    const id = useParams()
 
     const usersPerPage = 5;
     const pagesVisited = pageNumber * usersPerPage;
@@ -47,11 +50,11 @@ const ManageLocation = () => {
     };
 
 
-    //pagination
 
 
     return (
         <>
+        
             <div className="container-fluid ">
                 <div className="add-location">
                     <div className="booking-wrapper">
@@ -106,7 +109,7 @@ const ManageLocation = () => {
                                             <th scope="row">{i + pagesVisited + 1 }</th>
                                             <td>{item.location}</td>
                                             <td>
-                                            <Link ><EditLocation/></Link>
+                                            <Link onClick={e=>alert(item.id)} ><EditLocation/></Link>
                                                 <Link className="mange-admins-dlt-btn">
                                                     <DeleteForever onClick={() => { Abc('Manish') }} style={{ color: '#FF5C93' }} />
                                                 </Link>
@@ -153,4 +156,4 @@ const ManageLocation = () => {
     )
 }
 
-export default ManageLocation
+export default ManageLocation;

@@ -13,11 +13,11 @@ const ContactDetails = () => {
   const [data, getData] = useState([]);
 var phone;
   const createContactDetails = (e) => {
-    console.log(phone,email,address);
+    //console.log(phone,email,address);
     
 
     let data= {phone,email,address}
-    fetch("http://localhost:5000/contact",{
+    fetch(URL + "/contact",{
       method:"POST",
       headers:{
         'Accept':'application/json',
@@ -26,7 +26,7 @@ var phone;
         
     }).then((result)=>{
       result.json().then((data)=>{
-        console.log(data)
+        toast.success("Contact Updated Successfully")
       })
     }).catch((error)=>{
       console.log(error)
@@ -38,8 +38,8 @@ var phone;
   }, []);
 
   const getData1 = async()=>{
-    await axios.get("http://localhost:5000/getContact").then((res)=>{
-      console.log(res.data[0].email);
+    await axios.get(URL + "/getContact").then((res)=>{
+      //console.log(res.data[0].email);
       setEmail(res.data[0].email)
       setAddress(res.data[0].address)
       setPhonenumber(res.data[0].phone)
@@ -112,7 +112,7 @@ var phone;
               </div>
               <div className="contact-form-submint-btn-area">
                 <a
-                  href="#/app/contact-us"
+                  href="#/app/create-contact-details"
                   onClick={createContactDetails}
                   className="contact-form-submint-btn"
                 >

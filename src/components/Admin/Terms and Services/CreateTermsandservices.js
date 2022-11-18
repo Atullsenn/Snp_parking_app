@@ -3,6 +3,7 @@ import Axios from "axios";
 import { URL } from "../../../url/url";
 import { CKEditor } from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
+import {toast} from 'react-toastify';
 
 
 const CreateTermsandservices = () => {
@@ -11,12 +12,12 @@ const CreateTermsandservices = () => {
   const [data, getData] = useState([])
 
   const createTerms = () => {
-    console.log(heading,"description")
-    console.log(description,"++++++")
+    // console.log(heading,"description")
+    // console.log(description,"++++++")
     
     let postdata= {heading,description}
     
-    fetch("http://localhost:5000/addterms&conditions",{
+    fetch(URL + "/addterms&conditions",{
       method:"POST",
       headers:{
         'Accept':'application/json',
@@ -25,7 +26,8 @@ const CreateTermsandservices = () => {
       body:JSON.stringify({heading,description})
     }).then((result)=>{
       result.json().then((data)=>{
-        console.log(data);
+        toast.success("Success")
+        //console.log(data);
       }).catch((err)=>{
         console.log(err)
       })
@@ -39,8 +41,8 @@ const CreateTermsandservices = () => {
   }, []);
   
   const getData1 = async () => {
-    await Axios.get('http://localhost:5000/getterms&conditions').then(res => {
-    console.log(res.data.message[0])
+    await Axios.get(URL + '/getterms&conditions').then(res => {
+    //console.log(res.data.message[0])
      getData(res.data.message[0]);
      setHeading(res.data.message[0].heading);
      setDescriptions(res.data.message[0].description)     
@@ -48,6 +50,10 @@ const CreateTermsandservices = () => {
       console.log(err)
       console.log("err")
     })
+  }
+
+  const editdescription = (e)=>{
+    setDescriptions(e.target.value)
   }
   return (
     <>
@@ -76,10 +82,12 @@ const CreateTermsandservices = () => {
                       onReady={editor => {
                         console.log('Editor is ready to use!', editor);
                       }}
-                      onChange={(e) => { setDescriptions(e.target.getContent()) }}
+                      // onChange={(e) => { setDescriptions(e.target.value) }}
                       onChange={(event, editor) => {
                         const data = editor.getData();
-                        console.log({ event, editor, data });
+                        setDescriptions(data);
+                        
+                        // console.log({ event, editor, data });
                       }}
                      
                       onBlur={(event, editor) => {
@@ -93,7 +101,7 @@ const CreateTermsandservices = () => {
                     />
                   </div>
                   <div className="contact-form-submint-btn-area">
-                    <a href="#" onClick={createTerms} className="contact-form-submint-btn">Submit</a>
+                    <a href="#/app/create-terms-and-services" onClick={createTerms} className="contact-form-submint-btn">Submit</a>
                   </div>
                 </form>
               </div>

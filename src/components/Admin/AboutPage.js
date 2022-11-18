@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import { toast } from "react-toastify";
+import { URL } from "../../url/url";
 const AboutPage = () => {
     const[heading,setHeading]= useState([]);
     const[description,setDescription]= useState([]);
@@ -9,7 +11,7 @@ const AboutPage = () => {
     const submit= (e)=>{
         console.log(heading,description);
         let data= {heading,description}
-        fetch("http://localhost:5000/postAbout",{
+        fetch(URL + "/postAbout",{
           method:"POST",
           headers:{
             'Accept':'application/json',
@@ -18,7 +20,7 @@ const AboutPage = () => {
             
         }).then((result)=>{
           result.json().then((data)=>{
-            console.log(data)
+            toast.success("About Page Created Successfully")
           })
         }).catch((error)=>{
           console.log(error)
@@ -30,7 +32,7 @@ const AboutPage = () => {
     },[])
 
     const fetchAboutData= async()=>{
-        await axios.get("http://localhost:5000/getabout").then((res)=>{
+        await axios.get(URL + "/getabout").then((res)=>{
             console.log(res.data.message)
             // console.log(res.data[0].heading);
             // console.log(res.data[0].description);

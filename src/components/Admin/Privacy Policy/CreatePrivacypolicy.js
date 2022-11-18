@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { URL } from "../../../url/url";
+import { toast } from "react-toastify";
 
 
 const CreatePrivacypolicy = () => {
@@ -9,7 +10,7 @@ const CreatePrivacypolicy = () => {
     const submit= (e)=>{
         console.log(heading,description);
         let data= {heading,description}
-        fetch("http://localhost:5000/addPrivacyPolicy",{
+        fetch( URL + "/addPrivacyPolicy",{
           method:"POST",
           headers:{
             'Accept':'application/json',
@@ -18,7 +19,8 @@ const CreatePrivacypolicy = () => {
             
         }).then((result)=>{
           result.json().then((data)=>{
-            console.log(data)
+            //console.log(data)
+            toast.success("Privacy Policy Created Successfully")
           })
         }).catch((error)=>{
           console.log(error)
@@ -31,9 +33,9 @@ const CreatePrivacypolicy = () => {
         
       }, []);
       const getData1 = async()=>{
-        await axios.get("http://localhost:5000/getprivacypolicy").then((res)=>{
-          console.log(res.data[0].heading);
-          console.log(res.data[0].description);
+        await axios.get(URL + "/getprivacypolicy").then((res)=>{
+          // console.log(res.data[0].heading);
+          // console.log(res.data[0].description);
           setHeading(res.data[0].heading);
           setDescription(res.data[0].description);
     
@@ -70,7 +72,7 @@ const CreatePrivacypolicy = () => {
                                         }}></textarea>
                                     </div>
                                     <div className="contact-form-submint-btn-area">
-                                        <a href="#"  className="contact-form-submint-btn" onClick={submit}>Submit</a>
+                                        <a href="#/app/create-privacy-policy"  className="contact-form-submint-btn" onClick={submit}>Submit</a>
                                     </div>
                                 </form>
                             </div>

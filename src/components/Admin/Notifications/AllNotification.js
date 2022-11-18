@@ -86,8 +86,8 @@ const AllNotification = () => {
                       <td>
                         {item.user_id}
                       </td>
-                      <td>{item.title}</td>
-                      <td>{item.description}</td>
+                      <td>{item.title.substr(0,25) + ".."}</td>
+                      <td>{item.description.substr(0, 20) + ".."}</td>
                       <td>
                         {item.date}
                       </td>

@@ -1,7 +1,7 @@
-import * as Axios from "axios";
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { URL } from "../../../url/url";
+import { toast } from "react-toastify";
 
 
 const Settings = () => {
@@ -10,9 +10,6 @@ const Settings = () => {
   const [email, setEmail] = useState("")
   const [phone, setPhone] = useState("")
   const [address, setAddress] = useState("")
-  const [country, setCountry] = useState("")
-  const [state, setState] = useState("")
-  const [city, setCity] = useState("")
   const [postal, setPostal] = useState("")
   const [gender, setGender] = useState("")
   // const[ data, setData] = useState([])
@@ -27,13 +24,18 @@ const Settings = () => {
   }, [])
 
     const getsettingsdata = ()=>{
-      axios.get('http://localhost:5000/getprofileofadmin',{
+      axios.get(URL + '/getprofileofadmin',{
         Accept: "application/json",
         "Content-Type": "application/json",
       }).then(
         (res)=>{
           setData(res.data.data[0])
-          console.log(res.data.data[0])
+          setName(res.data.data[0]["first_name"]);
+          setEmail(res.data.data[0]["email"]);
+          setPhone(res.data.data[0]["phone"]);
+          setPostal(res.data.data[0]["pincode"]);
+          setAddress(res.data.data[0]["address"]);
+          setGender(res.data.data[0]["gender"]);
         }
       ).catch(
         (err)=>{
@@ -42,111 +44,80 @@ const Settings = () => {
       )
     }
 
-  const submitform = async () => {
-    let req = {
-      'id': localStorage.getItem("superAdminId"),
-      'name': name,
-      'email': email,
-      'phone': phone,
-      'address': address,
-      'country': country,
-      'state': state,
-      'city': city,
-      'postal': postal,
-      'gender': gender,
+    const submitform = async () => {
 
+      const formData = new FormData()
+            formData.append('id',1)
+            formData.append('first_name',name)
+            formData.append('email',email)
+            formData.append('phone',phone)
+            formData.append('address',address)
+            formData.append('pincode',postal)
+            formData.append('gender', gender)
+            formData.append('image',image)
 
-    }
-    console.log(req)
-    let res = await axios.post(URL + '/updateadmin', req).then(() => {
-      alert('Data Updated Successfully')
-      console.log(res)
-    }).catch(err => { console.log(err) })
-
-  }
-
-
-
-
-
-
-
-  //Country Api fetch
-  const [getcountrylist, setCountrylist] = useState([]);
-  const [getstatelist, setStatelist] = useState([]);
-  const [getcitylist, setCitylist] = useState([]);
-
-  useEffect(() => {
-    Axios.get(URL + "/countriesList", {
-      Accept: "application/json",
-      "Content-Type": "application/json",
-    }).then((res) => {
-      setCountrylist(res.data.data)
-    }).catch((err) => {
-      console.log(err)
-    })
-  }, [])
-
-
-  const stateShow = (countryid1) => {
-    Axios.post(URL + `/statesList/`, { cid: countryid1 }, {
-      Accept: "application/json",
-      "Content-Type": "application/json",
-    }).then((res) => {
-      console.log(res)
-      setStatelist(res.data.data);
-      console.log(res.data.data);
-    }).catch((err) => {
-      console.log(err)
-    })
-  }
-
-
-  const cityShow = (stateid1) => {
-    Axios.post(URL + `/citiesList/`, { sid: stateid1 }, {
-      Accept: "application/json",
-      "Content-Type": "application/json",
-    }).then((res) => {
-      console.log(res)
-      setCitylist(res.data.data)
-    }).catch((err) => {
-      console.log(err)
-    })
-  }
-  const handlecountry = (e) => {
-    setCountry(e.target.value);
-    stateShow(e.target.value);
-
-  }
-
-  const handlestate = (e) => {
-    const getstateid = e.target.value;
-    setState(getstateid)
-    cityShow(getstateid)
-  }
-      var [oldpassword, setOldPassword] = useState([]);
-    var[newpassword,setNewpassword]= useState([]);
-    var [confirmnewpassword,setConfirmNewPassword]= useState([])
-    const ChangePassword= (e)=>{
-        console.log(oldpassword,newpassword,confirmnewpassword)
-        let data= {oldpassword,newpassword,confirmnewpassword}
-        fetch("http://localhost:5000/changepasswordadmin",{
-          method:"POST",
-          headers:{
-            'Accept':'application/json',
-            'Content-Type':'application/json'
-          },body:JSON.stringify(data)
             
-        }).then((result)=>{
-          result.json().then((data)=>{
-            console.log(data)
-          })
-        }).catch((error)=>{
-          console.log(error)
+     
+      let res = await axios
+        .post(URL + "/updateAdmin", formData)
+        .then(() => {
+          toast.success("Data Updated Successfully")
+          
         })
-      
-    }
-  // }
+        .catch((err) => {
+          toast.error("error")
+          //console.log(err);
+        });
+        getsettingsdata()
+    };
+
+
+    const [password, setPassword] = useState("");
+    const [newpassword, setNewpassword] = useState("");
+    const [confirmpassword, setConfirmpassword] = useState("");
+
+    const ChangePassword = async () => {
+      if (password == "") {
+        toast.warn("Please Enter old Password");
+      } else if (newpassword == ""){
+         toast.warn("Please enter New Password");
+      }
+      // If confirm password not entered
+      else if (confirmpassword == ""){
+         toast.warn("Please enter confirm password");
+      }
+      // If Not same return False.
+      else if (newpassword != confirmpassword) {
+        toast.warn("\nPassword did not match: Please try again...");
+        return false;
+      }
+  
+      // If same return True.
+      else {
+        let reqq = {
+          id: 1,
+          password: password,
+          newpassword: newpassword,
+        };
+        
+        await axios.post(URL + "/changepasswordadmin", reqq, {
+          Accept: "Application/json",
+          "Content-Type": "Application/json",
+        })
+          .then((res) => {
+              toast.success("Password changed Successfully");
+          })
+          .catch((err) => {
+            //console.log(err.message);
+            toast.error('Please Enter Correct Password')
+          });
+      }
+  
+      // setPassword("");
+      // setNewpassword("");
+      // setConfirmpassword("");
+    };
+  
 
 
   //change photo
@@ -270,7 +241,7 @@ const Settings = () => {
                                 src = {
                                   data.image === ''?
                                   process.env.PUBLIC_URL +
-                                  "/assets/images/user-img.jpg" : data.company_image
+                                  "/assets/images/user-img.jpg" : `${URL}/uploads/${data.image}`
                                 }
                                 alt="user img"
                               />
@@ -484,7 +455,7 @@ const Settings = () => {
                                   <input
                                     type="text"
                                     className="form-control field"
-                                    defaultValue={data.postalcode}
+                                    defaultValue={data.pincode}
                                     onChange={(event) => {
                                       setPostal(event.target.value);
                                     }}
@@ -541,9 +512,9 @@ const Settings = () => {
                               type="text"
                               id="fname"
                               name="fname"
-                              onChange={e => setOldPassword(e.target.value)}
+                              onChange={e => setPassword(e.target.value)}
                               required="true"
-                              value={oldpassword}
+                              value={password}
                               className="form-control"
                               placeholder="Enter Old Password"
                             />
@@ -589,9 +560,9 @@ const Settings = () => {
                               id="fname"
                               name="confirmpassword"
                               required="true"
-                              value={confirmnewpassword}
+                              value={confirmpassword}
 
-                              onChange={(e) => setConfirmNewPassword(e.target.value)}
+                              onChange={(e) => setConfirmpassword(e.target.value)}
 
                               className="form-control"
                               placeholder="Enter Confirm Password"

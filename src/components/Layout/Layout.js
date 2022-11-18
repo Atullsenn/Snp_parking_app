@@ -55,7 +55,7 @@ function Layout(props) {
             <Route path="/app/dashboard" component={Dashboard} />
             <Route path="/app/admin/" component={ManageAdmin} />
             <Route path="/app/merchants" component={ManageMerchants} />
-            <Route path='/app/editparking/' component={EditParking}/>
+            <Route path='/app/editparking/:id' component={EditParking}/>
             <Route path="/app/customersdetails" component={CustomersDetails} />
             <Route path="/app/customersparkingdetails" component={CustomersParkingDetails} />
             <Route path="/app/add-admin" component={AddAdmin} />

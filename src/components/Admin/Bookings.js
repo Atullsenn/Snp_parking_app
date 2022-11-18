@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import DeleteForever from '@material-ui/icons/DeleteForever';
 import { Link } from "react-router-dom";
 import ReactPaginate from "react-paginate";
+import { URL } from "../../url/url";
 import axios from 'axios';
 
 
@@ -10,9 +11,12 @@ const Bookings = () => {
     const [age, setAge] = React.useState('');
     const [dataName, setDataName] = useState([])
     const getData = async () => {
-        await axios.get('http://localhost:5000/getallbooking').then(res => {
+        await axios.get(URL + '/getallbooking').then(res => {
             setDataName(res.data.message)
-            console.log(res.data.message)
+            console.log("cheking booking data")
+            console.table(dataName)
+            console.log("cheking booking data")
+            
         }).catch(err => {
             console.log(err)
             console.log("err")
@@ -56,7 +60,7 @@ const Bookings = () => {
                             <div className="col-md-3">
                                 <div className="table-data-search-box-manage">
                                     <div className="search-bar" >
-                                        <input type="text" className="searchTerm-input" placeholder="Search" />
+                                        <input type="text" onChange={(e)=>setSearch(e.target.value)} className="searchTerm-input" placeholder="Search" />
                                         <button type="submit" className="searchButtons">
                                             <i className="fa fa-search" aria-hidden="true"></i>
                                         </button>
@@ -90,12 +94,12 @@ const Bookings = () => {
                                             .toLowerCase()
                                             .includes(search.toString().toLowerCase()),
                                       )
-                                      .slice(pagesVisited, pagesVisited + usersPerPage).map((item) => (
+                                      .slice(pagesVisited, pagesVisited + usersPerPage).map((item,i) => (
                                         <tr>
-                                            <th scope="row">{item.id}</th>
-                                            <td>{item.parking_id}</td>
-                                            <td>{item.user_id}</td>
-                                            <td>{item.location_id}</td>
+                                            <th scope="row">{i + pagesVisited + 1}</th>
+                                            <td>{item.first_name}</td>
+                                            <td>{item.parking_name}</td>
+                                            <td>{item.location}</td>
                                             <td>{item.start_time}</td>
 
                                             <td>{item.end_time}</td>

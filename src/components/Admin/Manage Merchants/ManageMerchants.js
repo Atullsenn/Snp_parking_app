@@ -4,11 +4,46 @@ import VisibilityIcon from '@mui/icons-material/Visibility';
 import Pagination from '@mui/material/Pagination'
 import { Link } from "react-router-dom";
 import DeleteForever from '@material-ui/icons/DeleteForever';
+import ReactPaginate from 'react-paginate'
+import { URL } from "../../../url/url";
+import axios from "axios";
 
 
 
 const ManageMerchants = () => {
     const [activeInactive, setActiveInactive] = useState(true)
+    const [custmerData, setCustomerData] = useState([])
+
+    const GetAllCoustomer = ()=>{
+        axios.get(URL + '/getAllCustomers',{
+            Accept:'Application',
+            'Content-type': 'Application/json'
+        }).then((res)=>{
+            setCustomerData(res.data.message)
+            console.log("get all customers data")
+            console.table(custmerData)
+            console.log("get all customers data")
+        }).catch(err=>console.log('err'))
+    }
+
+    useEffect(()=>{
+        GetAllCoustomer()
+    },[])
+
+    //pagination
+  const [pageNumber, setPageNumber] = useState(0);
+  const [search,setSearch] = useState("");
+
+  const usersPerPage = 5;
+  const pagesVisited = pageNumber * usersPerPage;
+  const pageCount = Math.ceil(custmerData.length / usersPerPage);
+
+  const changePage = ({ selected }) => {
+    setPageNumber(selected);
+  };
+
+
+  //pagination
 
     return (
         <>
@@ -26,7 +61,7 @@ const ManageMerchants = () => {
                                 <div className="col-md-3">
                                     <div className="table-data-search-box-manage">
                                         <div className="search-bar" >
-                                            <input type="text" className="searchTerm-input" placeholder="Search" />
+                                            <input type="text" onChange={(e)=>setSearch(e.target.value)} className="searchTerm-input" placeholder="Search" />
                                             <button type="submit" className="searchButtons">
                                                 <i className="fa fa-search" aria-hidden="true"></i>
                                             </button>
@@ -53,11 +88,20 @@ const ManageMerchants = () => {
                                             </tr>
                                         </thead>
                                         <tbody>
+                                            {custmerData.filter(
+                                        (row) =>
+                                          !search.length ||
+                                          row.first_name
+                                            .toString()
+                                            .toLowerCase()
+                                            .includes(search.toString().toLowerCase()),
+                                      )
+                                      .slice(pagesVisited, pagesVisited + usersPerPage).map((item,i)=>(
                                             <tr >
-                                                <td></td>
-                                                <td>Vishal Singh</td>
-                                                <td>vksingh2992000@gmail.com</td>
-                                                <td>8076053744</td>
+                                                <td>{i+1}</td>
+                                                <td>{item.first_name}</td>
+                                                <td>{item.email}</td>
+                                                <td>{item.phone}</td>
                                                 <td><Link to={`/app/customersparkingdetails`} > 133</Link></td>
                                                 <td>  <Link to={`/app/customersdetails`} > <VisibilityIcon /></Link>
 
@@ -79,9 +123,23 @@ const ManageMerchants = () => {
                                                     />
                                                 </td>
                                             </tr>
+                                            ))}
                                         </tbody>
+                                    
                                     </table>
-                                    <Pagination count={100} color="primary" />
+                                    <div style={{ display: custmerData.length > 5 ? "block" : "none" }}>
+                    <ReactPaginate
+                      previousLabel={"Previous"}
+                      nextLabel={"Next"}
+                      pageCount={pageCount}
+                      onPageChange={changePage}
+                      containerClassName={"paginationBttns"}
+                      previousLinkClassName={"previousBttn"}
+                      nextLinkClassName={"nextBttn"}
+                      disabledClassName={"paginationDisabled"}
+                      activeClassName={"paginationActive"}
+                    />
+                    </div>
                                 </div>
                             </div>
                         </div>
