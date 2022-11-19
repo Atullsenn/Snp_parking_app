@@ -104,7 +104,7 @@ const deleteparking= require("../controllers/parking/deleteparking");
 router.post("/addParking",addparking);
 router.get("/getParking",getparking);
 router.post("/updateParking", updateparking)
-router.get("/getoneParking", getoneparkingdetails);
+router.post("/getoneParking", getoneparkingdetails);
 router.post("/deleteParking", deleteparking)
 const adddnotifications= require("../controllers/notificationas/addnotifications");
 router.post("/adddNotifications", adddnotifications);
