@@ -14,16 +14,22 @@ import {
 import useStyles from "../styles";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { useHistory } from 'react-router-dom';
+import { useHistory, useParams } from 'react-router-dom';
+import {URL} from '../../../url/url';
 
 
 toast.configure();
 export default function EditParking() {
+    const initialValue = {
+        parking_name: "",
+      };
     var classes = useStyles();
     let history = useHistory();
+    const id = useParams()
     const [isLoading, setIsLoading] = useState(false);
     const [isSecond, setIsSecond] = useState(false)
     const [isChecked, setIsChecked] = useState(false)
+    const [data,setData] = useState([initialValue]);
 
     const handleOnChange = () => {
         setIsChecked(!isChecked)
@@ -33,7 +39,7 @@ export default function EditParking() {
     }
     const [location, setLocation] = useState();
     const locationlist = async () => {
-        await axios.get('http://localhost:5000/locationlist').then(res => {
+        await axios.get(URL + '/locationlist').then(res => {
             var totallocation = res.data.data;
             setLocation(res.data.data)
 
@@ -41,6 +47,32 @@ export default function EditParking() {
             console.log(err)
         })
     }
+
+
+    //Get Parking Details By ID
+    useEffect(() => {
+        GetParkingDetailsByID();
+      }, []);
+    
+      const GetParkingDetailsByID = () => {
+        let request = { id };
+       
+        axios
+          .post(URL + "/getoneParking", id, {
+            Accept: "Application/json",
+            "Content-Type": "Application/json",
+          })
+          .then((res) => {
+            setData(res.data.data[0]);
+            // console.log('response')
+            // console.log(res);
+            // console.log('response')
+          })
+          .catch((err) => console.log(err));
+      };
+   
+
+    //Get Parking Details By ID
 
     return (<>
         <div className="container-fluid">
@@ -59,6 +91,7 @@ export default function EditParking() {
                                         id="name"
                                         name="name"
                                         label="Parking Name"
+                                        defaultValue={data.parking_name}
                                         variant='outlined'
                                         fullWidth
                                         margin="dense"
@@ -133,6 +166,7 @@ export default function EditParking() {
                                             id="location"
                                             name="location"
                                             label="Amount of Two Wheeler"
+                                            defaultValue={data.veichle_type_two_wheeler_rent}
                                             variant='outlined'
                                             fullWidth
                                             margin="dense"
@@ -145,6 +179,7 @@ export default function EditParking() {
                                             name="location"
                                             label="Amount of Four Wheeler"
                                             variant='outlined'
+                                            defaultValue={data.veichle_type_four_wheeler_rent}
                                             fullWidth
                                             margin="dense"
                                         />

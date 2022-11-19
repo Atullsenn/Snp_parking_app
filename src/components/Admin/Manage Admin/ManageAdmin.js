@@ -12,7 +12,7 @@ import { URL } from "../../../url/url";
 const ManageAdmin = () => {
     const [datas, setDatas]=useState([])
     const [search, setSearch] = useState("")
-    const id = useParams()
+    // const id = useParams()
 
     const getData = async () => {
         await axios.get(URL + '/getparking').then(res => {

@@ -138,8 +138,8 @@ const Settings = () => {
       reader.readAsDataURL(file);
     }
   };
-
   //change photo
+
   return (
     <>
       <div className="page-wrapper" style={{ minHeight: "250px" }}>
