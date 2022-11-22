@@ -12,8 +12,9 @@ import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
 import axios from 'axios';
 import { URL } from '../../url/url';
-import { useParams } from 'react-router-dom';
+import {useHistory } from 'react-router-dom';
 import { useState } from 'react';
+import {toast} from 'react-toastify';
 
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
     '& .MuiDialogContent-root': {
@@ -55,7 +56,8 @@ BootstrapDialogTitle.propTypes = {
     onClose: PropTypes.func.isRequired,
 };
 
-export default function CustomizedDialogs() {
+export default function CustomizedDialogs({sendId}) {
+    // console.log(sendId, 'send it id');
     const [open, setOpen] = React.useState(false);
 
     const handleClickOpen = () => {
@@ -65,31 +67,56 @@ export default function CustomizedDialogs() {
         setOpen(false);
     };
 
-    const id = useParams()
+   
     const [data,setData] = useState([])
 
     //Get Location By ID Api
     const getLocationById = ()=>{
-        let req = {id}
-        console.log(req)
-        axios.post(URL + '/getLocationByID',id,{
+        let req = {id:sendId}
+       
+        axios.post(URL + '/getLocationByID',req,{
             Accept:'Application',
             'Content-type': 'application/json'
         }).then((res)=>{
-            console.log("checking location by id")
-            console.log(res)
             setData(res.data.data[0])
-            console.log("checking location By id")
         }).catch(err=>console.log(err))
     }
 
     useEffect(()=>{
         getLocationById()
     },[])
-    
 
+
+   
     
     //Get Location By ID APi
+
+
+    //update Location
+    const [locationValue,setLocationValue] = useState("")
+    let history = useHistory()
+    const updateLocation= async(res)=>{
+        
+        let request = {
+            id:sendId,
+            location:locationValue,
+        }
+        await axios.post(URL + '/updateLocation',request,{
+            Accept: 'Application',
+            'Content-Type': 'Application/json'
+        }).then(()=>{
+            toast.success('Location updated')
+        }).catch((err)=>{
+            toast.error(err)
+
+    })
+    if(res.length === 0){
+        history.push('/app/managelocation')
+    }
+    }
+
+
+    //update Location
 
     return (
         <div>
@@ -103,13 +130,13 @@ export default function CustomizedDialogs() {
                     Edit Location
                 </BootstrapDialogTitle>
                 <DialogContent dividers>
-                    <input  type="text" defaultValue={data.location} placeholder='Enter Location' />
+                    <input  type="text" onChange={(e)=>setLocationValue(e.target.value)}  placeholder='Enter Location' defaultValue={data.location}/>
                 </DialogContent>
                 <DialogActions className=''>
                     <Button autoFocus onClick={handleClose}>
                         Cancel
                     </Button>
-                    <Button autoFocus onClick={handleClose}>
+                    <Button autoFocus onClick={(e)=>updateLocation(e)}>
                         Update
                     </Button>
 

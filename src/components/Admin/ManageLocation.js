@@ -9,7 +9,7 @@ import ReactPaginate from "react-paginate";
 import axios from 'axios';
 import { useParams } from 'react-router-dom';
 import { URL } from '../../url/url';
-import { Abc, HandymanOutlined } from '@mui/icons-material';
+import { Abc, HandymanOutlined, SendOutlined } from '@mui/icons-material';
 
 
 const ManageLocation = () => {
@@ -116,7 +116,7 @@ const ManageLocation = () => {
                                             <th scope="row">{i + pagesVisited + 1 }</th>
                                             <td>{item.location}</td>
                                             <td>
-                                            <Link onClick={(e)=>handleEdit(e,item.id)} ><EditLocation/></Link>
+                                            <Link><EditLocation sendId={item.id}/></Link>
                                                 <Link className="mange-admins-dlt-btn">
                                                     <DeleteForever onClick={() => { Abc('Manish') }} style={{ color: '#FF5C93' }} />
                                                 </Link>
