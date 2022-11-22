@@ -37,7 +37,7 @@ const updateparking = async (req, res) => {
                             res.send({ message: "value is not changed same as older" })
                         }
                     })
-                    // console.log(parking_name);
+                    
 
                 } else {                    
                     db.query('UPDATE table_add_parking  SET parking_name= "' + req.body.parking_name + '" ,capacity= "'+req.body.capacity+'",location_id="'+req.body.location_id+'" ,no_of_days= "'+req.body.no_of_days+'" ,veichle_type_four_wheeler= "'+req.body.veichle_type_four_wheeler+'" ,veichle_type_four_wheeler_rent= "'+req.body.veichle_type_four_wheeler_rent +'" ,  veichle_type_two_wheeler= "'+req.body.veichle_type_two_wheeler +'", veichle_type_two_wheeler_rent= "'+req.body.veichle_type_two_wheeler_rent +'" WHERE id= "' + req.body.id + '"', (error, data) => {
@@ -45,7 +45,7 @@ const updateparking = async (req, res) => {
                             res.send({ message: "error occurs" })
                         } else {
                             console.log(data)
-                            res.send({ message: "updated" })
+                            res.send({ message: data })
                         }
                     })
                 }
