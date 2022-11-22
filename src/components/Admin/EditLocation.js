@@ -70,10 +70,9 @@ export default function CustomizedDialogs() {
 
     //Get Location By ID Api
     const getLocationById = ()=>{
-        let req = {id:id}
-        console.log("req")
+        let req = {id}
         console.log(req)
-        axios.post(URL + '/getLocationByID',req,{
+        axios.post(URL + '/getLocationByID',id,{
             Accept:'Application',
             'Content-type': 'application/json'
         }).then((res)=>{
@@ -104,7 +103,7 @@ export default function CustomizedDialogs() {
                     Edit Location
                 </BootstrapDialogTitle>
                 <DialogContent dividers>
-                    <input  type="text" placeholder='Enter Location' />
+                    <input  type="text" defaultValue={data.location} placeholder='Enter Location' />
                 </DialogContent>
                 <DialogActions className=''>
                     <Button autoFocus onClick={handleClose}>
