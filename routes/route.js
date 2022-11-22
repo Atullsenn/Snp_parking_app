@@ -77,10 +77,12 @@ const getdetailsofoneuserbookings= require('../controllers/booking/getdataofoneb
 const contactandinquries= require("../controllers/ContactInquiries/ContactInquiries");
 const updatestatus= require("../controllers/updatestatus/updatestatus");
 const getNotificationas= require("../controllers/notificationas/getnotification");
+const getCustomerDetailsById = require('../controllers/customers/customerDetailsById')
 
 
 //route
 router.post("/userRegistration",upload.none(['first_name','last_name','email','phone','plate_number','address']),userRegistration)
+router.post("/CustomerDetailsById",getCustomerDetailsById)
 router.post("/login", loginuser)
 router.post("/changepassword", changepassword);
 router.post("/allData", alldata);
