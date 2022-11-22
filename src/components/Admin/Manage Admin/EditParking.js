@@ -16,21 +16,19 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useHistory, useParams } from 'react-router-dom';
 import {URL} from '../../../url/url';
-
-
 toast.configure();
-export default function EditParking() {
-    const initialValue = {
-        parking_name: "",
-        location: "",
-        capacity: "",
-        veichle_type_two_wheeler:"",
-        veichle_type_four_wheeler:"",
-        no_of_days: "",
-        veichle_type_two_wheeler_rent: "",
-        veichle_type_four_wheeler_rent: ""
-      };
+const initialValue = {
+    parking_name: "",
+    location: "",
+    capacity: "",
+    veichle_type_two_wheeler:"",
+    veichle_type_four_wheeler:"",
+    no_of_days: "",
+    veichle_type_two_wheeler_rent: "",
+    veichle_type_four_wheeler_rent: ""
+  };
 
+export default function EditParking() {
     var classes = useStyles();
     let history = useHistory();
     const id = useParams()
@@ -94,22 +92,19 @@ export default function EditParking() {
           })
           .then((res) => {
             setData(res.data.data[0]);
+            console.log(res.data.data[0])
           })
           .catch((err) => console.log(err));
       };
    
 
-      const onValueChange = (e) => {
-        setData({ ...data, [e.target.name]: e.target.value });
-      };
-
+     
     //Get Parking Details By ID
 
 
     //update Parking 
     const updateParkingById = async()=>{
         let req = {
-            id:3,
             parking_name: parking_name,
             locationName: locationName,
             no_of_days:no_of_days,
@@ -121,15 +116,14 @@ export default function EditParking() {
 
         }
         console.log("Checking Request")
-        console.log(req)
+        console.table(req)
         console.log("Checking Request")
+       
+
         await axios.post(URL + '/updateParking',id,req,{
             Accept:'Application',
             'Content-Type': 'Application/Json',
         }).then((res)=>{
-            console.log('response for updating parking ')
-            console.log(res)
-            console.log('response for updating parking ')
             toast.success('Data Updated Successfully')
         }).catch((err)=>{
             toast.error('Please Check Api')
@@ -137,6 +131,9 @@ export default function EditParking() {
         })
     }
 
+    const onValueChange = (e) => {
+        setData({ ...data, [e.target.name]: e.target.value });
+      };
 
 
     //update Parking
@@ -158,7 +155,7 @@ export default function EditParking() {
                                         id="name"
                                         name="name"
                                         label="Parking Name"
-                                        defaultValue={data.parking_name}
+                                        value={data.parking_name}
                                         onChange={(e)=>onValueChange(e)}
                                         variant='outlined'
                                         fullWidth
@@ -187,6 +184,7 @@ export default function EditParking() {
                                         id="capacity"
                                         name="capacity"
                                         label="Capacity"
+                                        value={data.capacity}
                                         variant='outlined'
                                         fullWidth
                                         margin="dense"
@@ -235,7 +233,7 @@ export default function EditParking() {
                                             id="location"
                                             name="location"
                                             label="Amount of Two Wheeler"
-                                            defaultValue={data.veichle_type_two_wheeler_rent}
+                                            value={data.veichle_type_two_wheeler_rent}
                                             onChange={(e)=>{onValueChange(e)}}
                                             variant='outlined'
                                             fullWidth
@@ -249,7 +247,7 @@ export default function EditParking() {
                                             name="location"
                                             label="Amount of Four Wheeler"
                                             variant='outlined'
-                                            defaultValue={data.veichle_type_four_wheeler_rent}
+                                            value={data.veichle_type_four_wheeler_rent}
                                             onChange={(e)=>{onValueChange(e)}}  
                                             fullWidth
                                             margin="dense"
@@ -265,7 +263,7 @@ export default function EditParking() {
                                     <Button
                                         variant="contained"
                                         size="large"
-                                        onClick={updateParkingById}
+                                        onClick={(e)=>updateParkingById(e)}
                                     >
                                         Update
                                     </Button>

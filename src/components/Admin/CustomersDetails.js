@@ -1,5 +1,41 @@
-import React from "react";
+import React,{useState,useEffect} from "react";
+import axios from 'axios';
+import { URL } from "../../url/url";
+import { useParams } from "react-router-dom";
+
+
+
+
 const CustomersDetails = () => {
+    //get Customer Details
+    const id = useParams()
+    const [data,setData] = useState([])
+
+    const getCustomerDetails = ()=>{
+        axios.post(URL + '/CustomerDetailsById',id,{
+            Accept: 'Application',
+            'Content-Type': 'Application/Json'
+        }).then((res)=>{
+            console.log("res")
+            console.log(res)
+            console.log("res")
+            setData(res.data)
+        }).catch(err=>console.log(err))
+    }
+
+
+    useEffect(()=>{
+        getCustomerDetails()
+    },[])
+
+    console.log("table@@@@@@@@@@@@@@@@@@@")
+    console.log(data)
+    console.log("table@@@@@@@@@@@@@@@@@@@")
+
+
+
+
+    //get Customer Details 
     return (
         <>
             <div className="page-wrapper" style={{ minHeight: "250px" }}>
@@ -14,13 +50,17 @@ const CustomersDetails = () => {
                             <div className="setting-tab-detail-main-area">
 
                                 <div className="tab-content" id="myTabContent">
+                                
                                     <div
 
                                         id="manage-profile"
                                         role="tabpanel"
                                         aria-labelledby="manage-profile-tab"
                                     >
+                                        {data.map((val) => {
+        return (
                                         <div className="row">
+                                        
                                             <div className="col-lg-5">
                                                 <div className="setting-tab-heading-area">
                                                     <h2>Personal Image</h2>
@@ -29,11 +69,17 @@ const CustomersDetails = () => {
                                                     <div className="user-photo-main-area">
                                                         <div className="user-img-area">
                                                             <img
-                                                                src={
+                                                                // src={
+                                                                //     process.env.PUBLIC_URL +
+                                                                //     "/assets/images/user-img.jpg"
+                                                                // }
+                                                                // alt="user img"
+                                                                src = {
+                                                                    val.image === ''?
                                                                     process.env.PUBLIC_URL +
-                                                                    "/assets/images/user-img.jpg"
-                                                                }
-                                                                alt="user img"
+                                                                    "/assets/images/user-img.jpg" : `${URL}/uploads/${val.image}`
+                                                                  }
+                                                                  alt="user img"
                                                             />
                                                         </div>
                                                     </div>
@@ -54,19 +100,19 @@ const CustomersDetails = () => {
                                                             <div className="col-lg-6">
                                                                 <div className="form-group">
                                                                     <label>Name</label>
-                                                                    <h5>Vishal Kumar Singh</h5>
+                                                                    <h5>{val.first_name}</h5>
                                                                 </div>
                                                             </div>
                                                             <div className="col-lg-6">
                                                                 <div className="form-group">
                                                                     <label>Email ID</label>
-                                                                    <h5>vksingh299200@gmail.com</h5>
+                                                                    <h5>{val.email}</h5>
                                                                 </div>
                                                             </div>
                                                             <div className="col-lg-6">
                                                                 <div className="form-group">
                                                                     <label>Contact Number</label>
-                                                                    <h5> 7562939752</h5>
+                                                                    <h5>{val.phone}</h5>
                                                                 </div>
                                                             </div>
                                                             <div className="col-lg-6">
@@ -78,7 +124,7 @@ const CustomersDetails = () => {
                                                             <div className="col-lg-6">
                                                                 <div className="form-group">
                                                                     <label>Address</label>
-                                                                    <h5>Faridabad, Haryana</h5>
+                                                                    <h5>{val.address}</h5>
                                                                 </div>
                                                             </div>
                                                             <div className="col-lg-6">
@@ -115,8 +161,12 @@ const CustomersDetails = () => {
                                                     </form>
                                                 </div>
                                             </div>
+                                            
                                         </div>
+                                        );
+                                    })}
                                     </div>
+                                  
                                 </div>
                             </div>
                         </div>

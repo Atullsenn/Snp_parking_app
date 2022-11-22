@@ -67,7 +67,7 @@ export default function CustomizedDialogs({sendId}) {
         setOpen(false);
     };
 
-   
+    
     const [data,setData] = useState([])
 
     //Get Location By ID Api
@@ -94,9 +94,8 @@ export default function CustomizedDialogs({sendId}) {
 
     //update Location
     const [locationValue,setLocationValue] = useState("")
-    let history = useHistory()
+    
     const updateLocation= async(res)=>{
-        
         let request = {
             id:sendId,
             location:locationValue,
@@ -110,8 +109,8 @@ export default function CustomizedDialogs({sendId}) {
             toast.error(err)
 
     })
-    if(res.length === 0){
-        history.push('/app/managelocation')
+    if(res){
+        setOpen(false)
     }
     }
 

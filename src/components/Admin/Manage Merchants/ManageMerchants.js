@@ -103,7 +103,7 @@ const ManageMerchants = () => {
                                                 <td>{item.email}</td>
                                                 <td>{item.phone}</td>
                                                 <td><Link to={`/app/customersparkingdetails`} > 133</Link></td>
-                                                <td>  <Link to={`/app/customersdetails`} > <VisibilityIcon /></Link>
+                                                <td>  <Link to={`/app/customersdetails/${item.id}`} > <VisibilityIcon /></Link>
 
                                                 </td>
                                                 <td>

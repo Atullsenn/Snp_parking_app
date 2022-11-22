@@ -56,7 +56,7 @@ function Layout(props) {
             <Route path="/app/admin/" component={ManageAdmin} />
             <Route path="/app/merchants" component={ManageMerchants} />
             <Route path='/app/editparking/:id' component={EditParking}/>
-            <Route path="/app/customersdetails" component={CustomersDetails} />
+            <Route path="/app/customersdetails/:id" component={CustomersDetails} />
             <Route path="/app/customersparkingdetails" component={CustomersParkingDetails} />
             <Route path="/app/add-admin" component={AddAdmin} />
             <Route exact path="/app/ui" render={() => <Redirect to="/app/ui/icons" />} />
