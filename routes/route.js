@@ -78,6 +78,9 @@ const contactandinquries= require("../controllers/ContactInquiries/ContactInquir
 const updatestatus= require("../controllers/updatestatus/updatestatus");
 const getNotificationas= require("../controllers/notificationas/getnotification");
 const getCustomerDetailsById = require('../controllers/customers/customerDetailsById')
+const locationDeleteStatus = require("../controllers/location/locationDelete");
+const customerDelete = require("../controllers/customers/customerDelete");
+const parkingStatus = require("../controllers/parking/parkingStatus");
 
 
 //route
@@ -99,7 +102,7 @@ router.get("/getAllCustomers", getallcustomers);
 router.post("/addLocation", addlocation);
 router.get('/allLocationList',alllocationlist );
 router.post("/updateLocation",updatelocation);
-router.post("/locationStatus", locationstatus);
+router.post("/updateLocationStatus", locationstatus);
 router.post("/addPrivacyPolicy", Addprivacypolicy);
 router.get('/getPrivacyPolicy',getprivacypolicy );
 router.post("/addTerms&Conditions", addterms_conditions);
@@ -115,7 +118,7 @@ router.get("/getParking",getparking);
 router.post("/updateParking", updateparking);
 router.post("/getoneParking", getoneparkingdetails);
 router.post("/deleteParking", deleteparking);
-router.post("/adddNotifications", adddnotifications);
+router.post("/addNotifications", adddnotifications);
 router.post("/getNotificationas",sendnotificationas)
 router.post("/changePasswordAdmin", changepasswordadmin)
 router.get("/getProfileOfAdmin",getprofileofadmin);
@@ -127,6 +130,9 @@ router.post("/updateStatus",updatestatus);
 router.post("/contactandinquries",upload.single("saveimage"), contactandinquries);
 router.get("/getNotifications",getNotificationas);
 router.get("/getContact",getContact);
+router.post("/locationDelete",locationDeleteStatus);
+router.post("/customerDelete", customerDelete);
+router.post("/parkingStatus",parkingStatus);
 
 module.exports = router;
 

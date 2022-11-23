@@ -2,7 +2,7 @@ const db = require("../../db/conn");
 
 const alllocationlist= async (req, res) => {
     try {
-        db.query('SELECT * FROM location', (error, data) => {
+        db.query('SELECT * FROM location WHERE isDelete = 0', (error, data) => {
             if (error) {
                 res.status(502).send({ message: error.message })
             } else {

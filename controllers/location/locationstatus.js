@@ -7,7 +7,7 @@ const locationstatus = async (req, res) => {
         } else {
             db.query('UPDATE location SET status= "' + req.body.status + '" WHERE id= "' + req.body.id + '"', (error, data) => {
                 if (error) {
-                    res.status(502).send({ message: "status is not change" })
+                    res.status(500).send({ message: error })
                 } else {     
                 res.status(200).send({ message: "status is changed" })               
                 }

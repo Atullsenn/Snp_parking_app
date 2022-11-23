@@ -1,7 +1,7 @@
 const db = require("../../db/conn");
 const getallcustomers=  async (req, res) => {
     try {
-        db.query("SELECT id,first_name,last_name,phone,email,image FROM users", (error, data) => {
+        db.query("SELECT * FROM users where isDelete = 0", (error, data) => {
             if (error) {
                 res.status(502).send({message:"unable to load the data from the server"})
             } else {

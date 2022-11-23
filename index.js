@@ -17,5 +17,5 @@ const cors = require('cors');
 app.use(cors());
 
 app.listen(port,()=>{
-    console.log(`server is listening to the port on the ${port}`)
+    console.log(`server is listening to the port on ${port}`)
 });

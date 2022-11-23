@@ -1,8 +1,8 @@
 const db = require('../../db/conn')
 
-const parkingDelete=(req,res)=>{
+const locationDelete=(req,res)=>{
 
-    db.query('UPDATE table_add_parking SET isDelete = 1 WHERE id = "'+req.body.id+'"', (err,data)=>{
+    db.query('UPDATE location SET isDelete = 1 WHERE id = "'+req.body.id+'"', (err,data)=>{
      if(err){
          //console.log('testing')
          res.status(500).send({message:err})
@@ -17,4 +17,5 @@ const parkingDelete=(req,res)=>{
  }
 
 
- module.exports = parkingDelete;
+ module.exports = locationDelete;
+
