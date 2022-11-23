@@ -15,6 +15,7 @@ import TextField from '@mui/material/TextField';
 import CloseIcon from '@mui/icons-material/Close';
 import axios from 'axios';
 import { URL } from '../../url/url';
+import {toast} from 'react-toastify';
 
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
     '& .MuiDialogContent-root': {
@@ -57,28 +58,14 @@ NotificationList.propTypes = {
     children: PropTypes.node,
     onClose: PropTypes.func.isRequired,
 };
-// const currencies = [
-//     {
-//         value: 'USD',
-//         label: 'All',
-//     },
-//     {
-//         value: 'EUR',
-//         label: 'Saurav',
-//     },
-//     {
-//         value: 'BTC',
-//         label: 'sirf mai',
-//     },
-//     {
-//         value: 'JPY',
-//         label: 'kala',
-//     },
-// ];
+
 export default function CustomizedDialogs() {
 
 
     const [currency, setCurrency] = React.useState();
+    const [user_id, setUser_id] = useState("");
+    const [message,setMessage] = useState("");
+    const [subject,setSubject] = useState("");
 
     const handleChange = (event) => {
         setCurrency(event.target.value);
@@ -120,6 +107,47 @@ export default function CustomizedDialogs() {
 
     //get all customer api
 
+
+    //send Notification
+    const sendNotifications = async (e) => {
+        //e.preventDefault();
+    
+        await axios
+          .post(
+            URL + "/addNotifications",
+            {
+            //   user_type: user_id,
+              userid: 1,
+              description: message,
+              title: subject,
+            },
+           
+            {
+              Accept: "application/json",
+              "Content-Type": "application/json",
+            },
+          )
+          .then((res) => {
+            toast.success("Notification Send Successfully");
+            console.log("response checking for notification")
+            console.log(res);
+            console.log("response checking for notification")
+            //console.log("data submitted")
+           
+    
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+          setSubject('')
+          setMessage('')
+        
+          
+      };
+
+
+    //send Notification
+
     return (
         <div>
             <Button onClick={handleClickOpen}>
@@ -148,16 +176,20 @@ export default function CustomizedDialogs() {
                                 id="outlined-select-currency"
                                 select
                                 label="Customer Name"
-                                value={currencies}
-                                onChange={handleChange}
+                                value={currency}
+                                onChange={(e)=>handleChange(e)}
                             >
+                                <MenuItem key={'All'} value={'All'}>All</MenuItem>
                                 {currencies.map((option) => (
-                                    <MenuItem>
+                                    <MenuItem key={option.id} value={option.id}>
                                         {option.first_name}
                                     </MenuItem>
                                 ))}
                             </TextField>
+                            
 
+
+                     
 
                         </div>
 
@@ -182,6 +214,7 @@ export default function CustomizedDialogs() {
                                 placeholder="Placeholder"
                                 fullWidth
                                 multiline
+                                onChange={(e)=>setSubject(e.target.value)}
                             />
                         </div>
                         <div className='notification-field'>
@@ -191,6 +224,7 @@ export default function CustomizedDialogs() {
 
                                 multiline
                                 rows={4}
+                                onChange={(e)=>setMessage(e.target.value)}
                             />
                         </div>
 
@@ -203,7 +237,7 @@ export default function CustomizedDialogs() {
                     <Button autoFocus onClick={handleClose}>
                         Cancle
                     </Button>
-                    <Button autoFocus onClick={handleClose}>
+                    <Button autoFocus onClick={sendNotifications}>
                         Send
                     </Button>
 
