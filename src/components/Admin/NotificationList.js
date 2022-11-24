@@ -69,6 +69,7 @@ export default function CustomizedDialogs() {
 
     const handleChange = (event) => {
         setCurrency(event.target.value);
+       
     };
 
 
@@ -117,7 +118,7 @@ export default function CustomizedDialogs() {
             URL + "/addNotifications",
             {
             //   user_type: user_id,
-              userid: 1,
+              user_id: currency,
               description: message,
               title: subject,
             },
@@ -129,9 +130,10 @@ export default function CustomizedDialogs() {
           )
           .then((res) => {
             toast.success("Notification Send Successfully");
-            console.log("response checking for notification")
-            console.log(res);
-            console.log("response checking for notification")
+            handleClose()
+            // console.log("response checking for notification")
+            // console.log(res);
+            // console.log("response checking for notification")
             //console.log("data submitted")
            
     

@@ -1,16 +1,19 @@
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import ReactPaginate from "react-paginate";
 import NotificationList from '../../Admin/NotificationList'
 import axios from "axios";
+import { URL } from "../../../url/url";
+
 const AllNotification = () => {
 
   // const [type, setType] = useState(1);
 
   // const [data, getData] = useState([]);
   const [data, setDataName] = useState([])
+  const id  = useParams()
   const getData = async () => {
-    await axios.get('http://localhost:5000/getNotifications').then(res => {
+    await axios.get(URL + '/getNotifications').then(res => {
       setDataName(res.data.message)
       console.log(res.data.message)
       console.log("checking dataaaaaaaaaaaaaa")
@@ -26,7 +29,7 @@ const AllNotification = () => {
   //pagination
   const [pageNumber, setPageNumber] = useState(0);
   const [search,setSearch] = useState("");
-
+  
   const usersPerPage = 5;
   const pagesVisited = pageNumber * usersPerPage;
   const pageCount = Math.ceil(data.length / usersPerPage);
@@ -37,6 +40,15 @@ const AllNotification = () => {
 
 
   //pagination
+
+  const getUserTypeName = (userType)=>{
+    if(userType == 0){
+      return "All"
+    }
+   
+      return data[0].first_name
+    
+  }
 
   return (
     <div className="page-wrapper" >
@@ -84,7 +96,7 @@ const AllNotification = () => {
                     <tr>
                       <td>{i + pagesVisited + 1}</td>
                       <td>
-                        {item.user_id}
+                      {item.user_id === 0 ? 'All' : item.first_name}
                       </td>
                       <td>{item.title.substr(0,25) + ".."}</td>
                       <td>{item.description.substr(0, 20) + ".."}</td>
@@ -93,7 +105,7 @@ const AllNotification = () => {
                       </td>
                       <td>
                         <Link
-                          to={`/app/notification-details/`}
+                          to={`/app/notificationDetails/${item.id}`}
                           className="mange-admins-edit-btn"
                         >
                           <i class="fas fa-eye"></i>

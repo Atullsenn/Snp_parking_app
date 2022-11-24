@@ -26,7 +26,7 @@ function Login(props) {
   var [isLoading, setIsLoading] = useState(false);
   var [error, setError] = useState(null);
   var [loginValue, setLoginValue] = useState("mobapps@gmail.com");
-  var [passwordValue, setPasswordValue] = useState("admin");
+  var [passwordValue, setPasswordValue] = useState("adminn");
   return (
     <Grid container className={classes.container}>
       <div className={classes.logotypeContainer}>

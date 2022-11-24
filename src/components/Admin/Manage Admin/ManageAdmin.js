@@ -61,7 +61,7 @@ const ManageAdmin = () => {
   };
 
   const handleremove = (e, th) => {
-    console.log(th);
+    //console.log(th);
     const text = "Are you sure want to delete"
     if (window.confirm(text) == true) {
         toast.success("Data deleted successfully");

@@ -1,6 +1,7 @@
 import React from "react";
 import axios from "axios";
 import { URL } from "../url/url";
+import { toast } from "react-toastify";
 
 var UserStateContext = React.createContext();
 var UserDispatchContext = React.createContext();
@@ -54,42 +55,40 @@ export { UserProvider, useUserState, useUserDispatch, loginUser, signOut };
 // ###########################################################
 
 function loginUser(dispatch, login, password, history, setIsLoading, setError) {
-  let url = URL + '/adminlogin';
+  let url = URL + '/loginAdminn';
   //let url = "http://localhost/bootstrap-laravel-react/backend-server/api/admin-login";
   setError(false);
-  setIsLoading(true);
+  // setIsLoading(true);
   axios.post(url, {
     email: login,
-    password: password,
-    id:1
-  }).then((response) => {
-    console.log(response.data);
+    password: password
     
-    dispatch({ type: 'LOGIN_SUCCESS',  })
-     history.push('/app/dashboard')
+  }).then((response) => {
+    
+    if (response.data.success === "true") {
+      localStorage.setItem('id_token', 1);
+      localStorage.setItem('superAdminId', JSON.stringify(response.data.user.id));
+      localStorage.setItem('loginUserType', JSON.stringify(response.data.user.user_type));
+      localStorage.setItem('superAdminEmail', JSON.stringify(response.data.user.email));
+      localStorage.setItem('superAdminName', JSON.stringify(response.data.user.first_name));
+      setError(null)
+      setIsLoading(false)
+      dispatch({ type: 'LOGIN_SUCCESS', UserType: JSON.stringify(response.data.user.type) })
+      toast.success("Login Success")
+      history.push('/app/dashboard')
+    }
+    else {
 
-    //console.log(response.data.success)
+      setError(true);
+      // setIsLoading(false);
+      dispatch({ type: "LOGIN_FAILURE" });
 
-    // if (response.data.success === "true") {
-    //   localStorage.setItem('id_token', 1);
-    //   localStorage.setItem('superAdminId', JSON.stringify(response.data.user.id));
-    //   localStorage.setItem('loginUserType', JSON.stringify(response.data.user.user_type));
-    //   localStorage.setItem('superAdminEmail', JSON.stringify(response.data.user.email));
-    //   localStorage.setItem('superAdminName', JSON.stringify(response.data.user.name));
-    //   setError(null)
-    //   setIsLoading(false)
-    //   dispatch({ type: 'LOGIN_SUCCESS', UserType: JSON.stringify(response.data.user.user_type) })
-    //   history.push('/app/dashboard')
-    // }
-    // else {
-
-    //   setError(true);
-    //   setIsLoading(false);
-    //   dispatch({ type: "LOGIN_FAILURE" });
-    //   history.push("/login");
-    // }
+      history.push("/login");
+    }
 
 
+  }).catch((err)=>{
+    toast.error("User email or password incorrect")
   });
 
   //https://itdevelopmentservices.com/vamoid/backend-server/api/admin-login
@@ -122,4 +121,5 @@ function signOut(dispatch, history) {
   localStorage.removeItem("superAdminName");
   dispatch({ type: "SIGN_OUT_SUCCESS" });
   history.push("/login");
+  toast.success("Signout success")
 }

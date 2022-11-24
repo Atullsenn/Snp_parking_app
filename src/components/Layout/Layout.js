@@ -13,6 +13,7 @@ import Sidebar from "../Sidebar";
 import Dashboard from "../Admin/Dashboard/Dashboard";
 import ManageAdmin from "../Admin/Manage Admin/ManageAdmin";
 import ManageMerchants from "../Admin/Manage Merchants/ManageMerchants";
+import NotificationDetails from "../Admin/notificatonDetails";
 // i   
 import EditParking from "../Admin/Manage Admin/EditParking";
 import Maps from "../../pages/maps";
@@ -76,6 +77,7 @@ function Layout(props) {
             <Route path="/app/create-terms-and-services" component={CreateTermsandservices} />
             <Route path="/app/privacy-policy" component={PrivacyPolicy} />
             <Route path="/app/create-privacy-policy" component={CreatePrivacypolicy} />
+            <Route path="/app/notificationDetails/:id" component={NotificationDetails}/>
           </Switch>
           <Box
             mt={0}
