@@ -8,6 +8,13 @@ const adddnotifications = (request, res) => {
         res.status(500).send({message:err});
         return;
       }
+
+      //Logic for send notification
+      
+
+
+
+      //Logic for send notification
       else{
         res.status(200).send({
             data:data

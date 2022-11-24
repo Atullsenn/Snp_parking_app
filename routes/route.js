@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const bodyParser = require("body-parser");
+const db = require('../db/conn')
 router.use(express.json());
 router.use("/uploads", express.static('uploads'));
 const multer = require("multer");
@@ -81,6 +82,7 @@ const getCustomerDetailsById = require('../controllers/customers/customerDetails
 const locationDeleteStatus = require("../controllers/location/locationDelete");
 const customerDelete = require("../controllers/customers/customerDelete");
 const parkingStatus = require("../controllers/parking/parkingStatus");
+const notificationDetailsByID = require("../controllers/notificationas/notificationDetailsById");
 
 
 //route
@@ -133,6 +135,61 @@ router.get("/getContact",getContact);
 router.post("/locationDelete",locationDeleteStatus);
 router.post("/customerDelete", customerDelete);
 router.post("/parkingStatus",parkingStatus);
+router.post("/notificationDetails",notificationDetailsByID);
+
+//login api
+
+router.post("/loginAdminn", (req, res) => {
+ 
+  
+    if (!req.body.email && req.body.email == null) {
+      return res.status(400).send({
+        success: "false",
+        msg: "email  is empty!",
+      });
+    }
+    if (!req.body.password && req.body.password == null) {
+      return res.status(400).send({
+        success: "false",
+        msg: "password is empty!",
+      });
+    }
+    // var encryptPassowrd = md5Hash.MD5(req.body.password);
+    //`SELECT * FROM tbl_users WHERE email = ${sql.escape(req.body.login)} AND password=${(encryptPassowrd)}`
+    db.query(
+      'SELECT * FROM admin WHERE password="'+ req.body.password+'" AND email ="'+req.body.email+'"',
+      (err, result) => {
+       // console.log(result);
+        // user does not exists
+        if (err) {
+          throw err; 
+          return res.status(400).send({
+            msg: err,
+          });
+        }
+        if (!result.length) {
+          return res.status(401).send({
+            success: "false",
+            msg: "Email or password is incorrect!",
+          });
+        } 
+        else{
+          return res.status(200).send({
+                    success:'true',
+                    msg: 'Login Successfully!',
+                    user: result[0]
+                  });
+        }
+  
+        
+  
+      }
+    );
+  });
+
+
+
+//login api
 
 module.exports = router;
 
