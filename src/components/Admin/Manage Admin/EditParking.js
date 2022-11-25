@@ -115,9 +115,7 @@ export default function EditParking() {
             veichle_type_four_wheeler_rent: veichle_type_four_wheeler_rent,
 
         }
-        console.log("Checking Request")
-        console.table(req)
-        console.log("Checking Request")
+       
        
 
         await axios.post(URL + '/updateParking',id,req,{
@@ -127,7 +125,7 @@ export default function EditParking() {
             toast.success('Data Updated Successfully')
         }).catch((err)=>{
             toast.error('Please Check Api')
-            console.log(err)
+            //console.log(err)
         })
     }
 

@@ -15,6 +15,10 @@ import useStyles from "./styles";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useHistory } from 'react-router-dom';
+import axios from 'axios';
+import {URL} from '../../url/url'
+
+
 
 toast.configure();
 export default function AddMerchant() {
@@ -32,6 +36,21 @@ export default function AddMerchant() {
     }
     const AddAdmin = async (res) => {
     }
+
+    //location list
+    const [location, setLocation] = useState();
+    const locationlist = async () => {
+        await axios.get(URL + '/locationlist').then(res => {
+            var totallocation = res.data.data;
+            setLocation(res.data.data)
+
+        }).catch(err => {
+            console.log(err)
+        })
+    }
+
+
+    //location list
     return (<>
         <div className="container-fluid">
             <div className="add-location">
@@ -55,11 +74,17 @@ export default function AddMerchant() {
                                     />
                                 </Grid>
                                 <Grid item md={12} xs={12} sm={6}>
-                                    <select class="form-select" style={{ padding: '12px', height: '45px', fontSize: '16px', color: '#4A4A4A', border: '1px solid #c4c4c4', borderRadius: '5px' }} aria-label="Default select example">
+                                    <select class="form-select" style={{ padding: '12px', height: '45px', fontSize: '16px', color: '#4A4A4A', border: '1px solid #c4c4c4', borderRadius: '5px' }} aria-label="Default select example" onClick={locationlist}>
                                         <option selected>Select Location</option>
-                                        <option value="1">One</option>
-                                        <option value="2">Two</option>
-                                        <option value="3">Three</option>
+                                        {/* <option value="1">One</option> */}
+                                        {
+                                        location &&Object.keys(location).map((element)=>{
+                                            
+                                            return( 
+                                                <option>{location[element].location}</option>
+                                            )
+                                        })
+                                    }
                                     </select>
                                 </Grid>
                                 <Grid item md={12} xs={12} sm={6}>

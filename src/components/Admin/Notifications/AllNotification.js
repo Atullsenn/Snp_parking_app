@@ -4,6 +4,8 @@ import ReactPaginate from "react-paginate";
 import NotificationList from '../../Admin/NotificationList'
 import axios from "axios";
 import { URL } from "../../../url/url";
+import moment from "moment";
+import {toast} from 'react-toastify';
 
 const AllNotification = () => {
 
@@ -14,8 +16,8 @@ const AllNotification = () => {
   const id  = useParams()
   const getData = async () => {
     await axios.get(URL + '/getNotifications').then(res => {
-      setDataName(res.data.message)
-      console.log(res.data.message)
+      setDataName(res.data.data)
+      console.log(res.data.data)
       console.log("checking dataaaaaaaaaaaaaa")
     }).catch(err => {
       console.log(err)
@@ -49,6 +51,37 @@ const AllNotification = () => {
       return data[0].first_name
     
   }
+
+
+  //notifiacation Delete
+  const notificationDeleteStatus = (th) => {
+    axios
+      .post(URL + "/notificationDelete", { id: th })
+      .then((res) => {
+        // console.log(res);
+        getData();
+       
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  const handleremove = (e, th) => {
+    //console.log(th);
+    const text = "Are you sure want to delete"
+    if (window.confirm(text) == true) {
+        toast.success("Data deleted successfully");
+        notificationDeleteStatus(th);
+        return true
+      } else {
+        toast.warn("You canceled!");
+        return false
+      }
+   
+  };
+
+  //notification Delete
 
   return (
     <div className="page-wrapper" >
@@ -96,12 +129,13 @@ const AllNotification = () => {
                     <tr>
                       <td>{i + pagesVisited + 1}</td>
                       <td>
-                      {item.user_id === 0 ? 'All' : item.first_name}
+                      {/* {item.user_id === 0 ? 'All' : item.first_name} */}
+                      {item.customerName === 'All' ? item.customerName : item.customerName[0].first_name + ' ' + item.customerName[0].last_name}
                       </td>
                       <td>{item.title.substr(0,25) + ".."}</td>
                       <td>{item.description.substr(0, 20) + ".."}</td>
                       <td>
-                        {item.date}
+                        {moment(item.date).format('YYYY-MM-DD : HH:MM')}
                       </td>
                       <td>
                         <Link
@@ -111,7 +145,9 @@ const AllNotification = () => {
                           <i class="fas fa-eye"></i>
                         </Link>
                         <Link
-                          to={`/app/notifications/`}
+                          to={`/app/notifications`}
+                          datalist={item.id}
+                          onClick={(e) => handleremove(e, item.id)}
 
 
                           className="mange-admins-dlt-btn"

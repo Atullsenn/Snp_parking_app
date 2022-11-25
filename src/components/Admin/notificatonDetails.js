@@ -19,13 +19,15 @@ const NotificationDetails = () => {
       let request = {'id': id}
       console.log(request);
       let response = await axios.post(URL + "/notificationDetails",request)
-      console.log(response.data.data[0]['id'])
+      //console.log(response.data.data[0]['id'])
       
       getNotificationsDetails(response.data.data[0])
     
     }
-    // console.log(notifications)
-    // console.log(id)
+    console.log("notifications error checking")
+    //console.log(notifications.customerName[0].first_name)
+    //console.log(notifications.customerName[0].first_name)
+    console.log("notifications error checking")
    
     const getUserTypeName = (userType) =>{
       if(userType == 0)
@@ -73,9 +75,8 @@ const NotificationDetails = () => {
                       </div> */}
                       <div className="admin-name-area">
                        <h4> {
-                                  
-                                  notifications.user_id === 0 ? 'All' : notifications.first_name
-                                  
+                                   //notifications.customerName[0].first_name
+                                   notifications.user_id === 0 ? 'All' : notifications.first_name + '  '+ notifications.last_name 
                                   }</h4>  
                       </div>  
                     </div>
@@ -86,7 +87,7 @@ const NotificationDetails = () => {
                   </div> 
                   <div className="col-lg-6">
                    <div className="contact-inquirie-area"> 
-                     <h4>Date: <span>{Moment(notifications.date).format('DD-MM-YYYY HH-mm')}</span></h4>
+                     <h4>Date: <span>{Moment(notifications.date).format('YYYY-MM-DD HH:MM')}</span></h4>
                     </div>
                   </div>  
                  </div>

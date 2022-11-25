@@ -139,7 +139,7 @@ const ManageAdmin = () => {
                   </div>
                   <div className="col-md-2">
                     <button class="head-button">
-                      <Link to={`/app/add-admin`}> Add Location</Link>
+                      <Link to={`/app/add-admin`}> Add Parking</Link>
                     </button>
                   </div>
                 </div>
