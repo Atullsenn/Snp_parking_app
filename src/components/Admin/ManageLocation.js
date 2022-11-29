@@ -155,7 +155,7 @@ const ManageLocation = ({label}) => {
             </div>
           </div>
           <div className="manage-admins-main-area">
-            <table class="table">
+            <table class="table" style={{wrap: 'no-wrap'}}>
               <thead>
                 <tr>
                   <th scope="col">Sr No.</th>

@@ -24,8 +24,14 @@ const initialValue = {
     veichle_type_two_wheeler:"",
     veichle_type_four_wheeler:"",
     no_of_days: "",
-    veichle_type_two_wheeler_rent: "",
-    veichle_type_four_wheeler_rent: ""
+    two_wheeler_per_hour_charge:"",
+    two_wheeler_per_day_charge: "",
+    two_wheeler_per_week_charge:"",
+    two_wheeler_per_month_charge:"",
+    four_wheeler_per_hour_charge:"",
+    four_wheeler_per_day_charge:"",
+    four_wheeler_per_week_charge:"",
+    four_wheeler_per_month_charge:""
   };
 
 export default function EditParking() {
@@ -35,7 +41,7 @@ export default function EditParking() {
     const [isLoading, setIsLoading] = useState(false);
     const [isSecond, setIsSecond] = useState(false)
     const [isChecked, setIsChecked] = useState(false)
-    const [data,setData] = useState([initialValue]);
+    const [data,setData] = useState(initialValue);
     const {
         parking_name,
         locationName,
@@ -43,8 +49,14 @@ export default function EditParking() {
         veichle_type_two_wheeler,
         veichle_type_four_wheeler,
         no_of_days,
-        veichle_type_two_wheeler_rent,
-        veichle_type_four_wheeler_rent,
+        two_wheeler_per_hour_charge,
+        two_wheeler_per_day_charge,
+        two_wheeler_per_week_charge,
+        two_wheeler_per_month_charge,
+        four_wheeler_per_hour_charge,
+        four_wheeler_per_day_charge,
+        four_wheeler_per_week_charge,
+        four_wheeler_per_month_charge,
       } = data;
 
     // const [parkingName, setParkingName] = useState("");
@@ -92,7 +104,9 @@ export default function EditParking() {
           })
           .then((res) => {
             setData(res.data.data[0]);
+            console.log("Checking data @@@@@@@@@")
             console.log(res.data.data[0])
+            console.log("Checking data @@@@@@@@@@")
           })
           .catch((err) => console.log(err));
       };
@@ -111,14 +125,18 @@ export default function EditParking() {
             capacity:capacity,
             veichle_type_two_wheeler:veichle_type_two_wheeler,
             veichle_type_four_wheeler:veichle_type_four_wheeler,
-            veichle_type_two_wheeler_rent:veichle_type_two_wheeler_rent,
-            veichle_type_four_wheeler_rent: veichle_type_four_wheeler_rent,
+            two_wheeler_per_hour_charge:two_wheeler_per_hour_charge,
+            two_wheeler_per_day_charge:two_wheeler_per_day_charge,
+            two_wheeler_per_week_charge: two_wheeler_per_week_charge,
+            two_wheeler_per_month_charge:two_wheeler_per_month_charge,
+            four_wheeler_per_hour_charge:four_wheeler_per_hour_charge,
+            four_wheeler_per_day_charge:four_wheeler_per_day_charge,
+            four_wheeler_per_week_charge:four_wheeler_per_week_charge,
+            four_wheeler_per_month_charge:four_wheeler_per_month_charge,
 
         }
        
-       
-
-        await axios.post(URL + '/updateParking',id,req,{
+        await axios.post(URL + '/updateParkingDetails',id,req,{
             Accept:'Application',
             'Content-Type': 'Application/Json',
         }).then((res)=>{
@@ -150,8 +168,8 @@ export default function EditParking() {
                                     <TextField
                                         required
                                         className="textfieldmui"
-                                        id="name"
-                                        name="name"
+                                        id="parking_name"
+                                        name="parking_name"
                                         label="Parking Name"
                                         value={data.parking_name}
                                         onChange={(e)=>onValueChange(e)}
@@ -225,32 +243,114 @@ export default function EditParking() {
                                 </Grid>
 
                                 <Grid item md={12} xs={12} sm={6}>
+                                    {isChecked ? <label style={{color: 'black'}}>Two Wheeler</label> : ''}
                                     {isChecked ?
                                         <TextField
                                             required
-                                            id="location"
-                                            name="location"
-                                            label="Amount of Two Wheeler"
-                                            value={data.veichle_type_two_wheeler_rent}
+                                            id="two_wheeler_per_hour_charge"
+                                            name="two_wheeler_per_hour_charge"
+                                            label="Per Hour Charge"
+                                            value={data.two_wheeler_per_hour_charge}
                                             onChange={(e)=>{onValueChange(e)}}
                                             variant='outlined'
                                             fullWidth
                                             margin="dense"
                                         />
                                         : ''}
+                                        {isChecked ?
+                                        <TextField
+                                            required
+                                            id="two_wheeler_per_day_charge"
+                                            name="two_wheeler_per_day_charge"
+                                            label="Per Day Charge"
+                                            value={data.two_wheeler_per_day_charge}
+                                            onChange={(e)=>{onValueChange(e)}}
+                                            variant='outlined'
+                                            fullWidth
+                                            margin="dense"
+                                        />
+                                        : ''}
+                                        {isChecked ?
+                                        <TextField
+                                            required
+                                            id="two_wheeler_per_week_charge"
+                                            name="two_wheeler_per_week_charge"
+                                            label="Per Week Charge"
+                                            value={data.two_wheeler_per_week_charge}
+                                            onChange={(e)=>{onValueChange(e)}}
+                                            variant='outlined'
+                                            fullWidth
+                                            margin="dense"
+                                        />
+                                        : ''}
+                                        {isChecked ?
+                                        <TextField
+                                            required
+                                            id="two_wheeler_per_month_charge"
+                                            name="two_wheeler_per_month_charge"
+                                            label="Per Month Charge"
+                                            value={data.two_wheeler_per_month_charge}
+                                            onChange={(e)=>{onValueChange(e)}}
+                                            variant='outlined'
+                                            fullWidth
+                                            margin="dense"
+                                        />
+                                        : ''}
+
+                                        {isSecond ? <label style={{color:'black'}}>Four Wheeler</label> : ''}
                                     {isSecond ?
                                         <TextField
                                             required
-                                            id="location"
-                                            name="location"
-                                            label="Amount of Four Wheeler"
+                                            id="four_wheeler_per_hour_charge"
+                                            name="four_wheeler_per_hour_charge"
+                                            label="Per Hour Charge"
                                             variant='outlined'
-                                            value={data.veichle_type_four_wheeler_rent}
+                                            value={data.four_wheeler_per_hour_charge}
                                             onChange={(e)=>{onValueChange(e)}}  
                                             fullWidth
                                             margin="dense"
                                         />
                                         : ''}
+                                        {isSecond ?
+                                        <TextField
+                                            required
+                                            id="four_wheeler_per_day_charge"
+                                            name="four_wheeler_per_day_charge"
+                                            label="Per Day Charge"
+                                            variant='outlined'
+                                            value={data.four_wheeler_per_day_charge}
+                                            onChange={(e)=>{onValueChange(e)}}  
+                                            fullWidth
+                                            margin="dense"
+                                        />
+                                        : ''}
+                                        {isSecond ?
+                                        <TextField
+                                            required
+                                            id="four_wheeler_per_week_charge"
+                                            name="four_wheeler_per_week_charge"
+                                            label="Per Week Charge"
+                                            variant='outlined'
+                                            value={data.four_wheeler_per_week_charge}
+                                            onChange={(e)=>{onValueChange(e)}}  
+                                            fullWidth
+                                            margin="dense"
+                                        />
+                                        : ''}
+                                        {isSecond ?
+                                        <TextField
+                                            required
+                                            id="four_wheeler_per_month_charge"
+                                            name="four_wheeler_per_month_charge"
+                                            label="Per Month Charge"
+                                            variant='outlined'
+                                            value={data.four_wheeler_per_month_charge}
+                                            onChange={(e)=>{onValueChange(e)}}  
+                                            fullWidth
+                                            margin="dense"
+                                        />
+                                        : ''}
+                                        
 
                                 </Grid>
                             </Grid>

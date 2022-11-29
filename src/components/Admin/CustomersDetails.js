@@ -127,7 +127,7 @@ const CustomersDetails = () => {
                                                                     <h5>{val.address}</h5>
                                                                 </div>
                                                             </div>
-                                                            <div className="col-lg-6">
+                                                            {/* <div className="col-lg-6">
                                                                 <div className="form-group">
                                                                     <label>Country</label>
 
@@ -145,7 +145,7 @@ const CustomersDetails = () => {
                                                                     <label>City</label>
                                                                     <h5>Faridabad</h5>
                                                                 </div>
-                                                            </div>
+                                                            </div> */}
                                                             <div className="col-lg-6">
                                                                 <div className="form-group">
                                                                     <label>Postal/ZIP Code</label>
