@@ -18646,7 +18646,17 @@ text-align:center;
 
 
 
+.add-location table .manage-location-count {
+  padding-left:20px;  
+}
 
+.action-btn-inline div {
+display: inline; 
+}
+
+.parking-number {
+text-align:center; 
+}
 
 
 

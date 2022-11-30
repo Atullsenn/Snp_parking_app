@@ -155,7 +155,7 @@ const ManageLocation = ({label}) => {
             </div>
           </div>
           <div className="manage-admins-main-area">
-            <table class="table" style={{wrap: 'no-wrap'}}>
+            <table class="table" style={{textAlign: 'center'}}>
               <thead>
                 <tr>
                   <th scope="col">Sr No.</th>
@@ -177,9 +177,9 @@ const ManageLocation = ({label}) => {
                   .slice(pagesVisited, pagesVisited + usersPerPage)
                   .map((item, i) => (
                     <tr>
-                      <th scope="row">{i + pagesVisited + 1}</th>
+                      <th className="manage-location-count" scope="row">{i + pagesVisited + 1}</th>
                       <td>{item.location}</td>
-                      <td>
+                      <td className="action-btn-inline">
                         <Link>
                           <EditLocation sendId={item.id} />
                         </Link>

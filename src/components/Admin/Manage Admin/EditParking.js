@@ -37,7 +37,7 @@ const initialValue = {
 export default function EditParking() {
     var classes = useStyles();
     let history = useHistory();
-    const id = useParams()
+    const {id} = useParams()
     const [isLoading, setIsLoading] = useState(false);
     const [isSecond, setIsSecond] = useState(false)
     const [isChecked, setIsChecked] = useState(false)
@@ -98,7 +98,7 @@ export default function EditParking() {
         let request = { id };
        
         axios
-          .post(URL + "/getoneParking", id, {
+          .post(URL + "/getoneParking", {id:id}, {
             Accept: "Application/json",
             "Content-Type": "Application/json",
           })
@@ -118,29 +118,54 @@ export default function EditParking() {
 
     //update Parking 
     const updateParkingById = async()=>{
-        let req = {
-            parking_name: parking_name,
-            locationName: locationName,
-            no_of_days:no_of_days,
-            capacity:capacity,
-            veichle_type_two_wheeler:veichle_type_two_wheeler,
-            veichle_type_four_wheeler:veichle_type_four_wheeler,
-            two_wheeler_per_hour_charge:two_wheeler_per_hour_charge,
-            two_wheeler_per_day_charge:two_wheeler_per_day_charge,
-            two_wheeler_per_week_charge: two_wheeler_per_week_charge,
-            two_wheeler_per_month_charge:two_wheeler_per_month_charge,
-            four_wheeler_per_hour_charge:four_wheeler_per_hour_charge,
-            four_wheeler_per_day_charge:four_wheeler_per_day_charge,
-            four_wheeler_per_week_charge:four_wheeler_per_week_charge,
-            four_wheeler_per_month_charge:four_wheeler_per_month_charge,
+        let req = id
+        // let req = {
+        //     parking_name: parking_name,
+        //     locationName: locationName,
+        //     no_of_days:no_of_days,
+        //     capacity:capacity,
+        //     veichle_type_two_wheeler:veichle_type_two_wheeler,
+        //     veichle_type_four_wheeler:veichle_type_four_wheeler,
+        //     two_wheeler_per_hour_charge:two_wheeler_per_hour_charge,
+        //     two_wheeler_per_day_charge:two_wheeler_per_day_charge,
+        //     two_wheeler_per_week_charge: two_wheeler_per_week_charge,
+        //     two_wheeler_per_month_charge:two_wheeler_per_month_charge,
+        //     four_wheeler_per_hour_charge:four_wheeler_per_hour_charge,
+        //     four_wheeler_per_day_charge:four_wheeler_per_day_charge,
+        //     four_wheeler_per_week_charge:four_wheeler_per_week_charge,
+        //     four_wheeler_per_month_charge:four_wheeler_per_month_charge,
 
-        }
-       
-        await axios.post(URL + '/updateParkingDetails',id,req,{
+        // }
+        console.log("request for cheking response")
+        console.log(req)
+        console.log("request for cheking response")
+    
+        await axios.post(URL + '/updateParkingDetails',{
+                id:id,
+                parking_name: parking_name,
+                locationName: locationName,
+                no_of_days:no_of_days,
+                capacity:capacity,
+                veichle_type_two_wheeler:veichle_type_two_wheeler,
+                veichle_type_four_wheeler:veichle_type_four_wheeler,
+                two_wheeler_per_hour_charge:two_wheeler_per_hour_charge,
+                two_wheeler_per_day_charge:two_wheeler_per_day_charge,
+                two_wheeler_per_week_charge: two_wheeler_per_week_charge,
+                two_wheeler_per_month_charge:two_wheeler_per_month_charge,
+                four_wheeler_per_hour_charge:four_wheeler_per_hour_charge,
+                four_wheeler_per_day_charge:four_wheeler_per_day_charge,
+                four_wheeler_per_week_charge:four_wheeler_per_week_charge,
+                four_wheeler_per_month_charge:four_wheeler_per_month_charge,
+    
+            
+        },{
             Accept:'Application',
             'Content-Type': 'Application/Json',
         }).then((res)=>{
             toast.success('Data Updated Successfully')
+            console.log("cheking update data ")
+            console.log(res)
+            console.log("checking update data")
         }).catch((err)=>{
             toast.error('Please Check Api')
             //console.log(err)

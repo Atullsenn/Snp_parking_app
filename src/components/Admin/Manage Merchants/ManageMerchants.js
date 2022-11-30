@@ -173,20 +173,20 @@ const ManageMerchants = () => {
                               <td>{item.first_name}</td>
                               <td>{item.email}</td>
                               <td>{item.phone}</td>
-                              <td>
+                              <td className="parking-number">
                                 <Link to={`/app/customersparkingdetails`}>
                                   {" "}
                                   133
                                 </Link>
                               </td>
-                              <td>
+                              <td className="parking-number">
                                 {" "}
                                 <Link to={`/app/customersdetails/${item.id}`}>
                                   {" "}
                                   <VisibilityIcon />
                                 </Link>
                               </td>
-                              <td>
+                              <td className="parking-number">
                                 <Link
                                   to={`/app/merchants`}
                                   datalist={item.id}

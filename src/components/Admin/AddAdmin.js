@@ -248,6 +248,16 @@ const handleChangeFourWheeler = (e) => {
                         })}
                     </select>
                   </Grid>
+                  <Grid item md={6}  sm={6}>
+                    <button>
+                    <label>
+                    <input type="file" style={{display:'none'}}></input>
+                      Choose Parking Image
+                    </label>
+                    </button>
+                    
+
+                  </Grid>
                   <Grid item md={12} xs={12} sm={6}>
                     <TextField
                       required
