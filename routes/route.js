@@ -87,9 +87,12 @@ const deleteNotification = require("../controllers/notificationas/notificationDe
 const updateParkingDetails = require("../controllers/parking/updateParkingDetails");
 
 
+
 //Api For Mobile
 const favoriteParking = require("../snp_mobile_api/controller/favariteLocation");
 const getFavoriteParking = require("../snp_mobile_api/controller/getFavoriteParking");
+const customerPayment = require("../snp_mobile_api/controller/payment");
+
 
 
 //route
@@ -151,6 +154,10 @@ router.post("/updateParkingDetails", updateParkingDetails);
 //Api For Mobile
 router.post("/favoriteParking",favoriteParking);
 router.get("/getFavoriteParking",getFavoriteParking);
+router.post("/customerPayment",customerPayment);
+router.post("/addNewCard",customerPayment.addNewCard);
+router.post("/customerCreate",customerPayment.createNewCustomer);
+router.post("/pay",customerPayment.createCharges)
 
 
 
