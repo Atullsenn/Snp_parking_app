@@ -1,7 +1,7 @@
 const db = require("../../db/conn");
 const getparking= async (req, res) => {
     try {
-        db.query("SELECT * FROM table_add_parking WHERE isDelete = 0", (error, data) => {
+        db.query("SELECT a.*, b.location  FROM table_add_parking a INNER JOIN location b ON a.location_id = b.id WHERE a.isDelete = 0", (error, data) => {
             if (error) {
                 res.send({ message: "no data is found" })
             } else {

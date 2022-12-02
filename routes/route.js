@@ -125,7 +125,7 @@ router.get("/allDispute", alldispute);
 router.post("/forgetPassword", forgetpassword);
 router.post("/resetPassword", resetpassword);
 router.post("/addLocation",adddlocation);
-router.post("/addParking",addparking);
+router.post("/addParking",upload.array("parking_images",20),addparking);
 router.get("/getParking",getparking);
 router.post("/updateParking", updateparking);
 router.post("/getoneParking", getoneparkingdetails);
@@ -147,7 +147,7 @@ router.post("/customerDelete", customerDelete);
 router.post("/parkingStatus",parkingStatus);
 router.post("/notificationDetails",notificationDetailsByID);
 router.post("/notificationDelete",deleteNotification);
-router.post("/updateParkingDetails", updateParkingDetails);
+router.post("/updateParkingDetails",upload.array("parking_images",20), updateParkingDetails);
 
 
 
