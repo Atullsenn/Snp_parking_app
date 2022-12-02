@@ -18,15 +18,17 @@ const ManageAdmin = () => {
     const getData = async () => {
         await axios.get(URL + '/getparking').then(res => {
             setDatas(res.data.message)
-            console.log(res.data.message);
         }).catch(err => {
-            console.log(err)
             console.log("err")
         })
     }
     useEffect(() => {
         getData();
     }, [])
+
+    console.log("dataaaaaaaaaaaaaaaaaaaaaaaaaaa")
+    console.log(datas)
+    console.log("dataaaaaaaaaaaaaaaaaaaaaaaaaaa")
 
 
     
@@ -181,7 +183,7 @@ const ManageAdmin = () => {
                                   </div>
                                 </div>
                               </td>
-                              <td>{item.location_id}</td>
+                              <td>{item.location}</td>
                               <td>{item.capacity}</td>
                               <td>
                                 <VisibilityIcon />

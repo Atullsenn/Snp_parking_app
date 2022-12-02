@@ -12,12 +12,37 @@ const Settings = () => {
   const [address, setAddress] = useState("")
   const [postal, setPostal] = useState("")
   const [gender, setGender] = useState("")
-  // const[ data, setData] = useState([])
-
-
-
-
   const [data, setData] = useState("")
+
+  //formValidation
+  const [nameError, setNameError] = useState("");
+  const nameRegex = /^[a-zA-Z\s]{0,25}$/;
+  const [emailError, setEmailError] = useState("");
+  const emailRegex = /^([_\-\.0-9a-zA-Z]+)@([_\-\.0-9a-zA-Z]+)\.([a-zA-Z]){2,7}$/;
+  const [phoneError, setPhoneError] = useState("");
+  const phoneRegex = /^([0-9]{0,15})$/;
+  const [addressError, setAddressError] = useState("");
+  const addressRegex = /^[#.0-9a-zA-Z\s,-]{0,50}$/;
+  const [zipCodeError, setZipCodeError] = useState("");
+  const zipCodeRegex = /(^\d{5}$)|(^\d{5}-\d{4}$)/;
+
+  const isEnabled =
+    !nameError &&
+    !emailError &&
+    !phoneError &&
+    !addressError &&
+    !zipCodeError &&
+    name != "" &&
+    email != "" &&
+    phone != "" &&
+    address != "" &&
+    postal != "";
+
+
+
+
+
+  //formValidation
 
   useEffect(() => {
     getsettingsdata()
@@ -281,9 +306,16 @@ const Settings = () => {
                                   <label>Name</label>
                                   <input
                                     type="text"
-                                    className="form-control field"
+                                    onError={nameError}
+                                    className={`form-control field ${
+                                      !nameError ? "is-valid" : "is-invalid"
+                                    }`}
                                     onChange={(event) => {
                                       setName(event.target.value);
+                                      const isNameCorrect = nameRegex.test(
+                                        event.target.value,
+                                      );
+                                      setNameError(!isNameCorrect);
                                     }}
                                     defaultValue={data.first_name}
                                     name="holdername"
@@ -292,6 +324,11 @@ const Settings = () => {
                                     required=""
                                     id="name"
                                   />
+                                  <div className="invalid-feedback">
+                                    {nameError
+                                      ? "Please Enter Name in String!"
+                                      : ""}
+                                  </div>
                                 </div>
                               </div>
                               <div className="col-lg-6">
@@ -299,9 +336,16 @@ const Settings = () => {
                                   <label>Email ID</label>
                                   <input
                                     type="text"
-                                    className="form-control field"
+                                    onError={emailError}
+                                    className={`form-control field ${
+                                      !emailError ? "is-valid" : "is-invalid"
+                                    } `}
                                     onChange={(event) => {
                                       setEmail(event.target.value);
+                                      const isEmailCorrect = emailRegex.test(
+                                        event.target.value,
+                                      );
+                                      setEmailError(!isEmailCorrect);
                                     }}
                                     defaultValue={data.email}
                                     name="holdername"
@@ -310,6 +354,11 @@ const Settings = () => {
                                     required=""
                                     id="name"
                                   />
+                                  <div className="invalid-feedback">
+                                    {emailError
+                                      ? "Please Enter Valid Email!"
+                                      : ""}
+                                  </div>
                                 </div>
                               </div>
                               <div className="col-lg-6">
@@ -317,9 +366,18 @@ const Settings = () => {
                                   <label>Contact Number</label>
                                   <input
                                     type="text"
-                                    className="form-control field"
+                                    onError={phoneError}
+                                    className={`form-control field ${
+                                      !phoneError ? "is-valid" : "is-invalid"
+                                    }`}
                                     onChange={(event) => {
                                       setPhone(event.target.value);
+                                      const isPhoneCorrect = phoneRegex.test(
+                                        event.target.value,
+                                      );
+                                      setPhoneError(
+                                        event.target.value !== "" &&
+                                          !isPhoneCorrect,)
                                     }}
                                     defaultValue={data.phone}
                                     name="holdername"
@@ -328,6 +386,11 @@ const Settings = () => {
                                     required=""
                                     id="name"
                                   />
+                                  <div className="invalid-feedback">
+                                    {phoneError
+                                      ? "Please Enter Valid Phone Number!"
+                                      : ""}
+                                  </div>
                                 </div>
                               </div>
                               <div className="col-lg-6">
@@ -357,10 +420,17 @@ const Settings = () => {
                                   <label>Address</label>
                                   <input
                                     type="text"
-                                    className="form-control field"
+                                    onError={addressError}
+                                    className={`form-control field ${
+                                      !addressError ? "is-valid" : "is-invalid"
+                                    }`}
                                     defaultValue={data.address}
                                     onChange={(event) => {
                                       setAddress(event.target.value);
+                                      const isAddressValid = addressRegex.test(
+                                        event.target.value,
+                                      );
+                                      setAddressError(!isAddressValid);
                                     }}
                                     name="holdername"
                                     placeholder="Enter Address"
@@ -368,6 +438,11 @@ const Settings = () => {
                                     required=""
                                     id="name"
                                   />
+                                  <div className="invalid-feedback">
+                                    {addressError
+                                      ? "Please Enter Valid Address!"
+                                      : ""}
+                                  </div>
                                 </div>
                               </div>
                               {/* <div className="col-lg-6">
@@ -454,10 +529,20 @@ const Settings = () => {
                                   <label>Postal/ZIP Code</label>
                                   <input
                                     type="text"
-                                    className="form-control field"
+                                    onError={zipCodeError}
+                                    className={`form-control field ${
+                                      !zipCodeError ? "is-valid" : "is-invalid"
+                                    }`}
                                     defaultValue={data.pincode}
                                     onChange={(event) => {
                                       setPostal(event.target.value);
+                                      const isZipCorrect = zipCodeRegex.test(
+                                        event.target.value,
+                                      );
+                                      setZipCodeError(
+                                        event.target.value != "" &&
+                                          !isZipCorrect,
+                                      );
                                     }}
                                     name="holdername"
                                     placeholder="Enter Postal/ZIP Code"
@@ -465,17 +550,31 @@ const Settings = () => {
                                     required=""
                                     id="name"
                                   />
+                                  <div className="invalid-feedback">
+                                    {zipCodeError
+                                      ? "Please Enter Valid Zip Code!"
+                                      : ""}
+                                  </div>
                                 </div>
                               </div>
                               <div className="col-lg-12">
                                 <div className="contact-form-submint-btn-area">
-                                  <a
+                                  {/* <a
                                     href="javascript: void(0)"
                                     onClick={submitform}
                                     className="contact-form-submint-btn"
                                   >
                                     Submit
-                                  </a>
+                                  </a> */}
+                                   <button
+                                    type="button"
+                                    style={{backgroundColor:'#0e2259',width:'90px',padding:'10px',color:'white', border:'2px solid white', borderRadius:'10px'}}
+                                    disabled={!isEnabled}
+                                    onClick={submitform}
+                                    // className="contact-form-submint-btn"
+                                  >
+                                    Submit
+                                  </button>
                                 </div>
                               </div>
                             </div>

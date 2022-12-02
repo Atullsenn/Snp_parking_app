@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { toast } from "react-toastify";
 import { URL } from "../../url/url";
+import { CKEditor } from '@ckeditor/ckeditor5-react';
+import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 const AboutPage = () => {
     const[heading,setHeading]= useState([]);
     const[description,setDescription]= useState([]);
@@ -65,9 +67,34 @@ const AboutPage = () => {
                                     </div>
                                     <div className="form-group">
                                         <label>Description</label>
-                                        <textarea className="form-control" placeholder="Enter Description" value={description} onChange={(e)=>{
+                                        {/* <textarea className="form-control" placeholder="Enter Description" value={description} onChange={(e)=>{
                                             setDescription(e.target.value)
-                                        }}></textarea>
+                                        }}></textarea> */}
+                                        <CKEditor
+                    
+                    editor={ClassicEditor}
+                    data={description}
+                    
+                    onReady={editor => {
+                      console.log('Editor is ready to use!', editor);
+                    }}
+                    // onChange={(e) => { setDescriptions(e.target.value) }}
+                    onChange={(event, editor) => {
+                      const data = editor.getData();
+                      setDescription(data);
+                      
+                      // console.log({ event, editor, data });
+                    }}
+                   
+                    onBlur={(event, editor) => {
+                      console.log('Blur.', editor);
+                    }}
+                    onFocus={(event, editor) => {
+                      console.log('Focus.', editor);
+                    }}
+                    
+                    
+                  />
                                     </div>
                                     <div className="contact-form-submint-btn-area">
                                         <button className="contact-form-submint-btn" onClick={submit}>Submit</button>

@@ -38,6 +38,7 @@ export default function AddMerchant() {
   const [fourWheelerPerDayCharge, setFourWheelerPerDayCharge] = useState("");
   const [fourWheelerPerWeekCharge, setFourWheelerPerWeekCharge] = useState("");
   const [fourWheelerPerMonthCharge, setFourWheelerPerMonthCharge] = useState("");
+  const [parkingImages, setParkingImages] = useState("")
 
   const handleOnChange = () => {
     setIsChecked(!isChecked);
@@ -45,7 +46,7 @@ export default function AddMerchant() {
   const secondOnChange = () => {
     setIsSecond(!isSecond);
   };
-  const AddAdmin = async (res) => {};
+  
 
   //location list
   const [location, setLocation] = useState();
@@ -55,11 +56,14 @@ export default function AddMerchant() {
       .then((res) => {
         //var totallocation = res.data.data;
         setLocation(res.data.data);
+
       })
       .catch((err) => {
         console.log(err);
       });
   };
+
+ 
 
   //location list
 //WorkingWithCheckBox
@@ -143,7 +147,7 @@ const handleChangeFourWheeler = (e) => {
   const { FourWheeler } = userinfo2;
   secondOnChange()
  
-  console.log(`${value} is ${checked}`);
+  //console.log(`${value} is ${checked}`);
    
   //Case 1 : The user checks the box
   if (checked) {
@@ -165,33 +169,31 @@ const handleChangeFourWheeler = (e) => {
 
   //Add Parking
   const addParking = async()=>{
-    let request = {
-        parking_name:parking_name,
-        location_id:locationName,
-        capacity:capacity,
-        no_of_days: userinfo.response,
-        veichle_type_two_wheeler: userinfo1.res,
-        veichle_type_four_wheeler:userinfo2.resp,
-        two_wheeler_per_hour_charge: twoWheelerPerHourCharge,
-        two_wheeler_per_day_charge: twoWheelerPerDayCharge,
-        two_wheeler_per_week_charge: twoWheelerPerWeekCharge,
-        two_wheeler_per_month_charge: twoWheelerPerMonthCharge,
-        four_wheeler_per_hour_charge: fourWheelerPerHourCharge,
-        four_wheeler_per_day_charge: fourWheelerPerDayCharge,
-        four_wheeler_per_week_charge: fourWheelerPerWeekCharge,
-        four_wheeler_per_month_charge: fourWheelerPerMonthCharge,
-    }
-
-   
-    await axios.post(URL + '/addParking',request,{
+    const formData = new FormData()
+    formData.append('parking_name',parking_name)
+    formData.append('location_id',locationName)
+    formData.append('capacity',capacity)
+    formData.append('no_of_days',userinfo.response)
+    formData.append('veichle_type_two_wheeler',userinfo1.res)
+    formData.append('veichle_type_four_wheeler',userinfo2.resp)
+    formData.append('two_wheeler_per_hour_charge', twoWheelerPerHourCharge)
+    formData.append('two_wheeler_per_day_charge',twoWheelerPerDayCharge)
+    formData.append('two_wheeler_per_week_charge',twoWheelerPerWeekCharge)
+    formData.append('two_wheeler_per_month_charge',twoWheelerPerMonthCharge)
+    formData.append('four_wheeler_per_hour_charge',fourWheelerPerHourCharge)
+    formData.append('four_wheeler_per_day_charge',fourWheelerPerDayCharge)
+    formData.append('four_wheeler_per_week_charge',fourWheelerPerWeekCharge)
+    formData.append('four_wheeler_per_month_charge',fourWheelerPerMonthCharge)
+    formData.append('parking_images',parkingImages)
+    await axios.post(URL + '/addParking',formData,{
         Accept:'Application',
         'Content-Type': 'Application/json'
     }).then((res)=>{
-        console.log(res)
+        //console.log(res)
         toast.success('Parking Added Successfully')
 
     }).catch((err)=>{
-        console.error(err)
+        //console.error(err)
         toast.error('Please check Error')
     })
   }
@@ -200,6 +202,39 @@ const handleChangeFourWheeler = (e) => {
  
   //Add Parking
 
+  
+  
+
+
+  //upload multiple images 
+  const [images,setImages] = useState([])
+  const [imagesPreview, setImagesPreview] = useState([])
+
+  const uploadMultipleParkingImage = (e)=>{
+    setParkingImages(e.target.files[0])
+    const files = Array.from(e.target.files)
+    setImages([])
+    setImagesPreview([])
+    files.forEach((file)=>{
+      const reader = new FileReader();
+      reader.onload = ()=>{
+        // if(reader.readyState === 2){
+          setImagesPreview([...imagesPreview, reader.result])
+          setImages([...images,reader.result])
+        //}
+
+      }
+      reader.readAsDataURL(file);
+
+    })
+
+  }
+
+
+//console.log(imagesPreview)
+
+
+  //upload multiple images
 
 
   
@@ -241,23 +276,35 @@ const handleChangeFourWheeler = (e) => {
                       onChange={(e)=>{setLocationName(e.target.value)}}
                     >
                       <option selected>Select Location</option>
-                      {/* <option value="1">One</option> */}
                       {location &&
                         Object.keys(location).map((element) => {
-                          return <option key={location[element].location} value={location[element].location}>{location[element].location}</option>;
+                          return <option key={location[element].id} value={location[element].id}>{location[element].location}</option>;
                         })}
                     </select>
                   </Grid>
+                  <div className="row">
+                    <div className="column">
+                    {imagesPreview.map((image,index)=>(
+                              <img
+                              style={{width:'100%'}}
+                                key={index}
+                                src={image}
+                                alt="parking images"
+                              />
+                              ))}
+                              </div>
+                            </div>
                   <Grid item md={6}  sm={6}>
-                    <button>
+                    <button style={{border: 'none'}}>
                     <label>
-                    <input type="file" style={{display:'none'}}></input>
+                    <input onChange={uploadMultipleParkingImage} type="file"  multiple style={{display:'none'}}></input>
                       Choose Parking Image
                     </label>
                     </button>
                     
 
                   </Grid>
+                  
                   <Grid item md={12} xs={12} sm={6}>
                     <TextField
                       required
